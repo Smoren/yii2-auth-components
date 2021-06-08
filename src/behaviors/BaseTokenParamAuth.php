@@ -29,7 +29,7 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
      */
     protected $throwableData = [];
     /**
-     * @var array Код исключения
+     * @var int Код исключения
      */
     protected $throwableCode = StatusCode::NOT_AUTHORIZED;
 
