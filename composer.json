@@ -1,0 +1,36 @@
+{
+  "name": "smoren/yii2-auth-components",
+  "description": "Extended auth components for Yii2",
+  "type": "yii2-extension",
+  "keywords": ["yii2", "extension", "controller", "auth"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Smoren",
+      "email": "ofigate@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.2.0",
+    "yiisoft/yii2": "~2.0.0",
+    "smoren/url-security-manager": "1.0.4",
+    "smoren/extended-exceptions": "1.0.0",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Smoren\\Yii2\\Auth\\": "src"
+    }
+  },
+  "config": {
+    "fxp-asset": {
+      "enabled": false
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ]
+}
