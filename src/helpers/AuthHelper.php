@@ -56,7 +56,7 @@ class AuthHelper
      * @return string|null
      * @throws TokenException
      */
-    protected function getTokenFromEncryptedUrl(string $secretKey, string $encryptedField = 'data', string $tokenField = 'token'): ?string
+    public static function getTokenEncrypted(string $secretKey, string $encryptedField = 'data', string $tokenField = 'token'): ?string
     {
         try {
             $usm = UrlSecurityManager::parse()

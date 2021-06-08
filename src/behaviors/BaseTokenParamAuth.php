@@ -21,6 +21,10 @@ use yii\web\User;
 abstract class BaseTokenParamAuth extends QueryParamAuth
 {
     /**
+     * @var bool Использовать ли шифрование
+     */
+    protected $useEncryption = false;
+    /**
      * @var User|null
      */
     protected $identity = null;
@@ -68,11 +72,14 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
     }
 
     /**
-     * @param array $params
-     * @return string|null
-     * @throws TokenException
+     * @param bool $value
+     * @return $this
      */
-    abstract protected function getToken(array $params = []): string;
+    public function setUseEncryption(bool $value): self
+    {
+        $this->useEncryption = $value;
+        return $this;
+    }
 
     /**
      * @param string $token
@@ -81,6 +88,21 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
      * @throws TokenException
      */
     abstract protected function getIdentity(string $token, User $user): IdentityInterface;
+
+    /**
+     * @param array $params
+     * @return string|null
+     * @throws TokenException
+     */
+    protected function getToken(array $params = []): string
+    {
+        if($this->useEncryption) {
+            // TODO
+            return AuthHelper::getTokenEncrypted();
+        }
+
+        return AuthHelper::getToken();
+    }
 
     /**
      * @param string|null $token
