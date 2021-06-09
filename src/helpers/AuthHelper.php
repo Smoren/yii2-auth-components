@@ -59,6 +59,10 @@ class AuthHelper
      */
     public static function getTokenEncrypted(string $secretKey, string $encryptedField = 'data', string $tokenField = 'token'): ?string
     {
+        if(static::$token !== null) {
+            return static::$token;
+        }
+
         try {
             $usm = UrlSecurityManager::parse()
                 ->setEncryptParams($encryptedField)
@@ -78,6 +82,7 @@ class AuthHelper
             throw new TokenException('empty', TokenException::STATUS_EMPTY);
         }
 
+        static::$token = $result;
         return $result;
     }
 

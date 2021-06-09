@@ -7,6 +7,7 @@ use Smoren\ExtendedExceptions\BadDataException;
 use Smoren\Yii2\Auth\exceptions\SessionException;
 use Smoren\Yii2\Auth\exceptions\TokenException;
 use Smoren\Yii2\Auth\helpers\AuthHelper;
+use Smoren\Yii2\Auth\models\UserSessionInterface;
 use Throwable;
 use Yii;
 use yii\db\Exception;
@@ -16,33 +17,32 @@ use yii\web\DbSession;
 /**
  * Реализация сессии
  */
-class Session extends DbSession
+abstract class Session extends DbSession
 {
+    /**
+     * @var UserSessionInterface Класс AR модели сессии пользователя
+     */
+    protected static $dbSessionClass;
     /**
      * @var bool Нужно ли обновлять время последней активности пользователя
      */
     public $needUpdateLastActivity = true;
-
     /**
      * @var bool Логировать ли данные?
      */
     public $logging = !YII_DEBUG;
-
     /**
      * @var bool Флаг открытия сессии
      */
     protected $beenOpened = false;
-
     /**
-     * @var UserSession AR модель сессии пользователя
+     * @var UserSessionInterface AR модель сессии пользователя
      */
     protected $dbSession;
-
     /**
      * @var resource Указатель на файл сессии
      */
     protected $fileHandler;
-
     /**
      * @var string Токен пользователя
      */
@@ -70,13 +70,8 @@ class Session extends DbSession
 
         if($this->token) {
             try {
-                $this->dbSession = UserSession::find()->byToken($this->token)->one();
-
+                $this->dbSession = static::$dbSessionClass::getByToken($this->token);
                 $this->setId($this->dbSession->token);
-
-                if($this->logging) {
-                    error_log("opened " . Session::getFilePath($this->token));
-                }
             } catch(BadDataException $e) {
             }
         }
@@ -104,6 +99,7 @@ class Session extends DbSession
 
     /**
      * @inheritdoc
+     * @throws BadDataException
      * @throws TokenException
      */
     public function init()
@@ -116,7 +112,7 @@ class Session extends DbSession
         };
 
         if(YII_ENV === 'test' || Yii::$app->getRequest()->isConsoleRequest) {
-            $this->token = UserSession::find()->byUser(Yii::$app->user->id)->first()->token;
+            $this->token = static::$dbSessionClass::getTokenByUser(Yii::$app->user->id);
         } else {
             // TODO encrypted?
             $this->token = AuthHelper::getToken();
@@ -136,7 +132,7 @@ class Session extends DbSession
             return true;
         }
 
-        $this->dbSession->data = $data;
+        $this->dbSession->setData($data);
 
         if(YII_ENV !== 'test') {
             try {
@@ -144,10 +140,6 @@ class Session extends DbSession
             } catch(BadDataException $e) {
                 throw new SessionException('cannot save session', SessionException::STATUS_LOGIC_ERROR);
             }
-        }
-
-        if($this->logging) {
-            error_log('write');
         }
 
         return true;
@@ -164,7 +156,7 @@ class Session extends DbSession
             return '';
         }
 
-        return $this->dbSession->data ?: '';
+        return $this->dbSession->getData() ?: '';
     }
 
     /**
@@ -177,21 +169,7 @@ class Session extends DbSession
 
             if($this->needUpdateLastActivity) {
                 $lastActivity = (new DateTime())->getTimestamp();
-                $this->dbSession->last_activity = $lastActivity;
-
-                try {
-                    $this->dbSession->user->active_at = $lastActivity;
-                    $this->dbSession->user->save();
-                } catch(Throwable $e) {
-                }
-
-                if(!Yii::$app->getRequest()->isConsoleRequest) {
-                    (new UserHistoryService())->upsertUserHistory($this->dbSession->user->id);
-                }
-            }
-
-            if(!Yii::$app->getRequest()->isConsoleRequest) {
-                $this->dbSession->updateDeviceData();
+                $this->dbSession->setLastActivity($lastActivity);
             }
 
             if(YII_ENV !== 'test') {
@@ -226,17 +204,10 @@ class Session extends DbSession
 
     /**
      * @inheritDoc
-     * @throws Exception
      */
     public function gcSession($maxLifetime)
     {
-        $this->db->createCommand()
-            ->delete(
-                UserSession::tableName(),
-                'lifetime > 0 and (lifetime + last_activity) < :time_now',
-                [':time_now' => (new DateTime())->getTimestamp()]
-            )
-            ->execute();
+        static::$dbSessionClass::clearOldSessions();
 
         return true;
     }
