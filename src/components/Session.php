@@ -8,9 +8,7 @@ use Smoren\Yii2\Auth\exceptions\SessionException;
 use Smoren\Yii2\Auth\exceptions\TokenException;
 use Smoren\Yii2\Auth\helpers\AuthHelper;
 use Smoren\Yii2\Auth\models\UserSessionInterface;
-use Throwable;
 use Yii;
-use yii\db\Exception;
 use yii\helpers\FileHelper;
 use yii\web\DbSession;
 
