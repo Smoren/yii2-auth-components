@@ -2,12 +2,12 @@
 
 namespace Smoren\Yii2\Auth\exceptions;
 
-use Smoren\ExtendedExceptions\BaseException;
+use Smoren\ExtendedExceptions\BadDataException;
 
 /**
  * Исключение на уровне приложения
  */
-class ApiException extends BaseException
+class ApiException extends BadDataException
 {
 
 }
