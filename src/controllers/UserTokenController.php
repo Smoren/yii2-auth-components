@@ -7,7 +7,7 @@ use Smoren\Yii2\Auth\behaviors\UserTokenParamAuth;
 /**
  * Базовый класс API контроллера с авторизацией
  */
-abstract class UserTokenController extends BaseController
+class UserTokenController extends BaseController
 {
     protected static $except = ['options', 'OPTIONS'];
 
