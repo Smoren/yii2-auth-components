@@ -20,6 +20,7 @@ class UserTokenController extends BaseController
         $behaviors['authenticator'] = [
             'class' => UserTokenParamAuth::class,
             'except' => static::$except,
+            'useEncryption' => false,
         ];
 
         return $behaviors;

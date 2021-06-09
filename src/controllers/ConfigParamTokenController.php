@@ -11,11 +11,7 @@ use Smoren\Yii2\Auth\behaviors\UserTokenParamAuth;
 abstract class ConfigParamTokenController extends BaseController
 {
     protected static $except = ['options', 'OPTIONS'];
-
-    /**
-     * @return string
-     */
-    abstract protected static function getToken(): string;
+    protected static $tokenParamKey = 'token';
 
     /**
      * @inheritdoc
@@ -26,7 +22,8 @@ abstract class ConfigParamTokenController extends BaseController
         $behaviors['authenticator'] = [
             'class' => ConfigParamTokenParamAuth::class,
             'except' => static::$except,
-            'token' => static::getToken(),
+            'paramKey' => static::$tokenParamKey,
+            'useEncryption' => false,
         ];
 
         return $behaviors;

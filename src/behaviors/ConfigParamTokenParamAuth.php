@@ -4,6 +4,7 @@ namespace Smoren\Yii2\Auth\behaviors;
 
 use Smoren\Yii2\Auth\exceptions\TokenException;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * Поведение для авторизации через кастомное сравнение с правильным токеном
@@ -20,7 +21,7 @@ class ConfigParamTokenParamAuth extends CustomTokenParamAuth
      * @param string $paramKey
      * @return $this
      */
-    public function setToken(string $paramKey): self
+    public function setParamKey(string $paramKey): self
     {
         $this->paramKey = $paramKey;
         return $this;
@@ -32,7 +33,7 @@ class ConfigParamTokenParamAuth extends CustomTokenParamAuth
      */
     protected function getValidToken(): string
     {
-        $token = Yii::$app->params[$this->paramKey] ?? null;
+        $token = ArrayHelper::getValue(Yii::$app->params, $this->paramKey, null);
 
         if($token === null) {
             throw new TokenException('no token in params', TokenException::STATUS_LOGIC_ERROR);
