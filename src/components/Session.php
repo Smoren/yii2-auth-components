@@ -4,6 +4,7 @@ namespace Smoren\Yii2\Auth\components;
 
 use DateTime;
 use Smoren\ExtendedExceptions\BadDataException;
+use Smoren\ExtendedExceptions\BaseException;
 use Smoren\Yii2\Auth\exceptions\SessionException;
 use Smoren\Yii2\Auth\exceptions\TokenException;
 use Smoren\Yii2\Auth\helpers\AuthHelper;
@@ -109,12 +110,17 @@ abstract class Session extends DbSession
             ];
         };
 
-        if(YII_ENV === 'test' || Yii::$app->getRequest()->isConsoleRequest) {
-            $this->token = static::$dbSessionClass::getTokenByUser(Yii::$app->user->id);
-        } else {
-            // TODO encrypted?
-            $this->token = AuthHelper::getToken();
+        try {
+            if(YII_ENV === 'test' || Yii::$app->getRequest()->isConsoleRequest) {
+                $this->token = static::$dbSessionClass::getTokenByUser(Yii::$app->user->id);
+            } else {
+                // TODO encrypted?
+                $this->token = AuthHelper::getToken();
+            }
+        } catch(BaseException $e) {
+            $this->token = null;
         }
+
     }
 
     /**
