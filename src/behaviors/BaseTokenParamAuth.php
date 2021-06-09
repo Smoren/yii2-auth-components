@@ -11,12 +11,10 @@ use Throwable;
 use Yii;
 use yii\filters\auth\QueryParamAuth;
 use yii\web\IdentityInterface;
-use yii\web\Request;
-use yii\web\Response;
 use yii\web\User;
 
 /**
- * Расширенный класс для авторизации через токен
+ * Базовое поведение для авторизации через токен
  */
 abstract class BaseTokenParamAuth extends QueryParamAuth
 {
@@ -97,8 +95,8 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
     protected function getToken(array $params = []): string
     {
         if($this->useEncryption) {
-            // TODO
-            return AuthHelper::getTokenEncrypted();
+            [$secretKey, $encryptedField, $tokenField] = $this->getEncryptedSettings();
+            return AuthHelper::getTokenEncrypted($secretKey, $encryptedField, $tokenField);
         }
 
         return AuthHelper::getToken();
@@ -113,5 +111,14 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
     protected function processToken(string $token, User $user): ?IdentityInterface
     {
         return $this->getIdentity($token, $user);
+    }
+
+    /**
+     * @return array
+     * @throws TokenException
+     */
+    protected function getEncryptedSettings(): array
+    {
+        throw new TokenException('no secret key specified', TokenException::STATUS_LOGIC_ERROR);
     }
 }

@@ -6,7 +6,7 @@ use Yii;
 use yii\base\ActionFilter;
 
 /**
- * Фильтр проверки фронтенд домена
+ * Фильтр проверки frontend домена
  */
 class AccessControlAllowOriginFilter extends ActionFilter
 {

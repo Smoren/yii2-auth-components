@@ -2,25 +2,15 @@
 
 namespace Smoren\Yii2\Auth\behaviors;
 
-use Smoren\ExtendedExceptions\BaseException;
 use Smoren\Yii2\Auth\exceptions\TokenException;
-use Smoren\Yii2\Auth\helpers\AuthHelper;
 use yii\web\IdentityInterface;
 use yii\web\User;
 
 /**
- * Расширенный класс для авторизации через токен
+ * Поведение авторизации через токен пользователя
  */
 class UserTokenParamAuth extends BaseTokenParamAuth
 {
-    /**
-     * @inheritDoc
-     */
-    protected function getToken(array $params = []): string
-    {
-        return AuthHelper::getToken();
-    }
-
     /**
      * @inheritDoc
      */

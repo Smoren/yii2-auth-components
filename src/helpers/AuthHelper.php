@@ -10,6 +10,7 @@ use Smoren\UrlSecurityManager\Exceptions\UrlSecurityManagerException;
 use Smoren\UrlSecurityManager\UrlSecurityManager;
 use Smoren\Yii2\Auth\exceptions\TokenException;
 use Yii;
+use yii\filters\AccessControl;
 
 class AuthHelper
 {
@@ -78,5 +79,22 @@ class AuthHelper
         }
 
         return $result;
+    }
+
+    /**
+     * @param $roles
+     * @return array
+     */
+    public static function getRoleAccessBehaviorSettings($roles): array
+    {
+        return [
+            'class' => AccessControl::class,
+            'rules' => [
+                [
+                    'allow' => true,
+                    'roles' => $roles,
+                ]
+            ]
+        ];
     }
 }
