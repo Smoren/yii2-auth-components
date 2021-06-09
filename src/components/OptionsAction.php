@@ -3,7 +3,7 @@
 namespace Smoren\Yii2\Auth\components;
 
 use Smoren\Yii2\Auth\exceptions\ApiException;
-use Smoren\Yii2\Auth\models\StatusCode;
+use Smoren\Yii2\Auth\structs\StatusCode;
 use Yii;
 
 class OptionsAction extends \yii\rest\OptionsAction

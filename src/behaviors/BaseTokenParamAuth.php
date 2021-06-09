@@ -6,7 +6,7 @@ use Smoren\ExtendedExceptions\BaseException;
 use Smoren\Yii2\Auth\exceptions\ApiException;
 use Smoren\Yii2\Auth\exceptions\TokenException;
 use Smoren\Yii2\Auth\helpers\AuthHelper;
-use Smoren\Yii2\Auth\models\StatusCode;
+use Smoren\Yii2\Auth\structs\StatusCode;
 use Throwable;
 use Yii;
 use yii\filters\auth\QueryParamAuth;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smoren\Yii2\Auth\models;
+namespace Smoren\Yii2\Auth\structs;
 
 /**
  * Класс для списка статусов ответа от сервера

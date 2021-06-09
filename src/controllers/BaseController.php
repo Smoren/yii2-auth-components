@@ -5,7 +5,7 @@ namespace Smoren\Yii2\Auth\controllers;
 use Smoren\Yii2\Auth\behaviors\AccessControlAllowOriginFilter;
 use Smoren\Yii2\Auth\components\OptionsAction;
 use Smoren\Yii2\Auth\exceptions\ApiException;
-use Smoren\Yii2\Auth\models\StatusCode;
+use Smoren\Yii2\Auth\structs\StatusCode;
 use Yii;
 use yii\filters\Cors;
 use yii\rest\Controller;

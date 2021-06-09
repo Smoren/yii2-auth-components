@@ -3,7 +3,7 @@
 namespace Smoren\Yii2\Auth\behaviors;
 
 use Smoren\Yii2\Auth\exceptions\ApiException;
-use Smoren\Yii2\Auth\models\StatusCode;
+use Smoren\Yii2\Auth\structs\StatusCode;
 use yii\base\Action;
 use yii\base\ActionFilter;
 
