@@ -8,7 +8,7 @@ use Yii;
 /**
  * Поведение для авторизации через кастомное сравнение с правильным токеном
  */
-abstract class ConfigParamTokenParamAuth extends CustomTokenParamAuth
+class ConfigParamTokenParamAuth extends CustomTokenParamAuth
 {
     /**
      * @var string ключ токена в секции params конфига
