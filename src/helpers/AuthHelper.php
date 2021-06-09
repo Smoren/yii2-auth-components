@@ -44,7 +44,7 @@ class AuthHelper
         static::$token = $token;
 
         if($token === null || $token === '') {
-            throw new TokenException('empty', TokenException::STATUS_EMPTY);
+            throw new TokenException('no token specified', TokenException::STATUS_EMPTY);
         }
 
         return $token;
@@ -79,7 +79,7 @@ class AuthHelper
         $result = $queryParams[$tokenField] ?? null;
 
         if($result === null || $result === '') {
-            throw new TokenException('empty', TokenException::STATUS_EMPTY);
+            throw new TokenException('no token specified', TokenException::STATUS_EMPTY);
         }
 
         static::$token = $result;
