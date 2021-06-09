@@ -2,6 +2,7 @@
 
 namespace Smoren\Yii2\Auth\helpers;
 
+use Smoren\Yii2\Auth\components\Session;
 use Yii;
 
 /**
@@ -17,5 +18,14 @@ class SessionHelper
     public static function getCurrentSession()
     {
         return Yii::$app->session;
+    }
+
+    public static function deleteSessionFile($token)
+    {
+        $filePath = Session::getFilePath($token);
+        if(file_exists($filePath) && is_file($filePath)) {
+            error_log("removed $filePath");
+            @unlink($filePath);
+        }
     }
 }
