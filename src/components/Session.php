@@ -100,12 +100,6 @@ abstract class Session extends DbSession
     public function init()
     {
         parent::init();
-        $this->writeCallback = function() {
-            return [
-                'user_id' => Yii::$app->user->getId(),
-            ];
-        };
-
         SessionManager::register($this);
     }
 
