@@ -15,11 +15,6 @@ use yii\filters\AccessControl;
 class AuthHelper
 {
     /**
-     * @var string Токен пользователя
-     */
-    private static $token;
-
-    /**
      * Название заголовка токена для передачи между клиентом и сервером
      */
     const HEADER_TOKEN_PARAM = 'X-Auth-Token';
@@ -31,17 +26,11 @@ class AuthHelper
      */
     public static function getToken(): ?string
     {
-        if(static::$token !== null) {
-            return static::$token;
-        }
-
         $token = Yii::$app->request->headers->get(self::HEADER_TOKEN_PARAM);
 
         if(!$token) {
             $token = Yii::$app->request->get('token');
         }
-
-        static::$token = $token;
 
         if($token === null || $token === '') {
             throw new TokenException('no token specified', TokenException::STATUS_EMPTY);
@@ -59,10 +48,6 @@ class AuthHelper
      */
     public static function getTokenEncrypted(string $secretKey, string $encryptedField = 'data', string $tokenField = 'token'): ?string
     {
-        if(static::$token !== null) {
-            return static::$token;
-        }
-
         try {
             $usm = UrlSecurityManager::parse()
                 ->setEncryptParams($encryptedField)
@@ -82,7 +67,6 @@ class AuthHelper
             throw new TokenException('no token specified', TokenException::STATUS_EMPTY);
         }
 
-        static::$token = $result;
         return $result;
     }
 

@@ -3,6 +3,7 @@
 namespace Smoren\Yii2\Auth\components;
 
 use DateTime;
+use Exception;
 use Smoren\ExtendedExceptions\BadDataException;
 use Smoren\ExtendedExceptions\BaseException;
 use Smoren\Yii2\Auth\exceptions\SessionException;
@@ -27,10 +28,6 @@ abstract class Session extends DbSession
      */
     public $needUpdateLastActivity = true;
     /**
-     * @var bool Логировать ли данные?
-     */
-    public $logging = !YII_DEBUG;
-    /**
      * @var bool Флаг открытия сессии
      */
     protected $beenOpened = false;
@@ -42,34 +39,30 @@ abstract class Session extends DbSession
      * @var resource Указатель на файл сессии
      */
     protected $fileHandler;
-    /**
-     * @var string Токен пользователя
-     */
-    protected $token;
 
+    /**
+     * @param $token
+     * @throws \yii\base\Exception
+     */
     public function start($token)
     {
         if($this->beenOpened) {
-            return null;
+            return;
         }
         $this->beenOpened = true;
 
-        $this->token = $token;
-
-        if(!$this->token) {
+        if(!$token) {
             parent::open();
-            return null;
+            return;
         }
 
-        $this->fileHandler = fopen(static::getFilePath($this->token), 'wb');
+        $this->fileHandler = fopen(static::getFilePath($token), 'wb');
         flock($this->fileHandler, LOCK_EX);
 
-        if($this->token) {
-            try {
-                $this->dbSession = static::$dbSessionClass::getByToken($this->token);
-                $this->setId($this->dbSession->token);
-            } catch(BadDataException $e) {
-            }
+        try {
+            $this->dbSession = static::$dbSessionClass::getByToken($token);
+            $this->setId($this->dbSession->token);
+        } catch(BadDataException $e) {
         }
 
         parent::open();
@@ -158,7 +151,7 @@ abstract class Session extends DbSession
 
     /**
      * @inheritdoc
-     * @throws \Exception
+     * @throws Exception
      */
     public function closeSession()
     {
@@ -169,22 +162,16 @@ abstract class Session extends DbSession
                 $this->dbSession->setLastActivity($lastActivity);
             }
 
-            if(YII_ENV !== 'test') {
-                try {
-                    $this->dbSession->save();
-                } catch(BadDataException $e) {
-                    throw new SessionException($e->getMessage(), SessionException::STATUS_LOGIC_ERROR, $e, ['error' => 'Ошибка при сохранении сессии'], $e->getDebugData());
-                }
+            try {
+                $this->dbSession->save();
+            } catch(BadDataException $e) {
+                throw new SessionException($e->getMessage(), SessionException::STATUS_LOGIC_ERROR, $e, ['error' => 'Ошибка при сохранении сессии'], $e->getDebugData());
             }
         }
 
         if($this->fileHandler !== null) {
             flock($this->fileHandler, LOCK_UN);
             fclose($this->fileHandler);
-        }
-
-        if($this->logging) {
-            error_log('closed');
         }
 
         return parent::closeSession();
