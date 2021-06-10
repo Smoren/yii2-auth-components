@@ -3,7 +3,9 @@
 namespace Smoren\Yii2\Auth\behaviors;
 
 use Smoren\ExtendedExceptions\BaseException;
+use Smoren\Yii2\Auth\components\SessionManager;
 use Smoren\Yii2\Auth\exceptions\ApiException;
+use Smoren\Yii2\Auth\exceptions\SessionException;
 use Smoren\Yii2\Auth\exceptions\TokenException;
 use Smoren\Yii2\Auth\helpers\AuthHelper;
 use Smoren\Yii2\Auth\structs\StatusCode;
@@ -121,10 +123,15 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
      * @param User $user
      * @return IdentityInterface|null
      * @throws TokenException
+     * @throws SessionException
      */
     protected function processToken(string $token, User $user): ?IdentityInterface
     {
-        return $this->getIdentity($token, $user);
+        $identity = $this->getIdentity($token, $user);
+        SessionManager::setToken($token);
+        SessionManager::open();
+
+        return $identity;
     }
 
     /**

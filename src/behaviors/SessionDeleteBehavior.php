@@ -2,7 +2,7 @@
 
 namespace Smoren\Yii2\Auth\behaviors;
 
-use Smoren\Yii2\Auth\helpers\SessionHelper;
+use Smoren\Yii2\Auth\components\SessionManager;
 use yii\base\Behavior;
 use yii\base\Event;
 use yii\db\ActiveRecord;
@@ -28,6 +28,6 @@ class SessionDeleteBehavior extends Behavior
     public function afterDelete(Event $event)
     {
         $sender = $event->sender;
-        SessionHelper::deleteSessionFile($sender->token);
+        SessionManager::deleteSessionFile($sender->token);
     }
 }

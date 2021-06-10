@@ -47,17 +47,14 @@ abstract class Session extends DbSession
      */
     protected $token;
 
-    /**
-     * Запрещаем повторное открытие сессии во время работы скрипта
-     * @return void|null
-     * @throws \yii\base\Exception
-     */
-    public function open()
+    public function start($token)
     {
         if($this->beenOpened) {
             return null;
         }
         $this->beenOpened = true;
+
+        $this->token = $token;
 
         if(!$this->token) {
             parent::open();
@@ -76,6 +73,14 @@ abstract class Session extends DbSession
         }
 
         parent::open();
+    }
+
+    /**
+     * Запрещаем повторное открытие сессии во время работы скрипта
+     * @return void|null
+     */
+    public function open()
+    {
         return null;
     }
 
@@ -98,8 +103,6 @@ abstract class Session extends DbSession
 
     /**
      * @inheritdoc
-     * @throws BadDataException
-     * @throws TokenException
      */
     public function init()
     {
@@ -110,17 +113,7 @@ abstract class Session extends DbSession
             ];
         };
 
-        try {
-            if(YII_ENV === 'test' || Yii::$app->getRequest()->isConsoleRequest) {
-                $this->token = static::$dbSessionClass::getTokenByUser(Yii::$app->user->id);
-            } else {
-                // TODO encrypted?
-                $this->token = AuthHelper::getToken();
-            }
-        } catch(BaseException $e) {
-            $this->token = null;
-        }
-
+        SessionManager::register($this);
     }
 
     /**
