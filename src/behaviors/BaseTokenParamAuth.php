@@ -125,7 +125,7 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
      * @throws TokenException
      * @throws SessionException
      */
-    protected function processToken(string $token, User $user): ?IdentityInterface
+    protected function processToken(string $token, User $user): IdentityInterface
     {
         $identity = $this->getIdentity($token, $user);
         SessionManager::setToken($token);

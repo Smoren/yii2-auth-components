@@ -20,7 +20,7 @@ abstract class CustomTokenParamAuth extends BaseTokenParamAuth
     /**
      * @inheritDoc
      */
-    protected function processToken(string $token, User $user): ?IdentityInterface
+    protected function processToken(string $token, User $user): IdentityInterface
     {
         if($token !== $this->getValidToken()) {
             throw new TokenException('token invalid', TokenException::STATUS_INVALID);
