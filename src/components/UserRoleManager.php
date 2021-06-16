@@ -12,11 +12,11 @@ class UserRoleManager
 {
     /**
      * Проверяет есть ли у пользователя роль
-     * @param int $userId
+     * @param mixed $userId
      * @param string $roleName
      * @return bool
      */
-    public function hasRole(int $userId, string $roleName): bool
+    public function hasRole($userId, string $roleName): bool
     {
         $ids = Yii::$app->authManager->getUserIdsByRole($roleName);
         return in_array($userId, $ids);
@@ -24,12 +24,12 @@ class UserRoleManager
 
     /**
      * Добавляет роль пользователю
-     * @param int $userId
+     * @param mixed $userId
      * @param string $roleName
      * @return UserRoleManager
      * @throws Exception
      */
-    public function addRole(int $userId, string $roleName)
+    public function addRole($userId, string $roleName)
     {
         $auth = Yii::$app->authManager;
         $role = $auth->getRole($roleName);
