@@ -2,7 +2,6 @@
 
 namespace Smoren\Yii2\Auth\components;
 
-use Smoren\Yii2\Auth\components\Session;
 use Smoren\Yii2\Auth\exceptions\SessionException;
 use Yii;
 

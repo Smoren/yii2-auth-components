@@ -4,7 +4,6 @@
 namespace Smoren\Yii2\Auth\helpers;
 
 
-use Smoren\ExtendedExceptions\BaseException;
 use Smoren\UrlSecurityManager\Exceptions\DecryptException;
 use Smoren\UrlSecurityManager\Exceptions\UrlSecurityManagerException;
 use Smoren\UrlSecurityManager\UrlSecurityManager;
@@ -24,7 +23,7 @@ class AuthHelper
      * @return string
      * @throws TokenException
      */
-    public static function getToken(): ?string
+    public static function getToken(): string
     {
         $token = Yii::$app->request->headers->get(self::HEADER_TOKEN_PARAM);
 
@@ -46,7 +45,7 @@ class AuthHelper
      * @return string|null
      * @throws TokenException
      */
-    public static function getTokenEncrypted(string $secretKey, string $encryptedField = 'data', string $tokenField = 'token'): ?string
+    public static function getTokenEncrypted(string $secretKey, string $encryptedField = 'data', string $tokenField = 'token'): string
     {
         try {
             $usm = UrlSecurityManager::parse()
@@ -85,5 +84,37 @@ class AuthHelper
                 ]
             ]
         ];
+    }
+
+    /**
+     * @param string $key
+     * @return string
+     * @throws TokenException
+     */
+    public static function getValidTokenFromParams(string $key): string
+    {
+        $validToken = Yii::$app->params[$key] ?? null;
+
+        if($validToken === null || $validToken === '') {
+            throw new TokenException('no valid token specified', TokenException::STATUS_LOGIC_ERROR);
+        }
+
+        return $validToken;
+    }
+
+    /**
+     * @param string $key
+     * @return string
+     * @throws TokenException
+     */
+    public static function getValidTokenFromEnv(string $key): string
+    {
+        $validToken = $_ENV[$key] ?? null;
+
+        if($validToken === null || $validToken === '') {
+            throw new TokenException('no valid token specified', TokenException::STATUS_LOGIC_ERROR);
+        }
+
+        return $validToken;
     }
 }

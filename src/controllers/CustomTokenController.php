@@ -2,10 +2,7 @@
 
 namespace Smoren\Yii2\Auth\controllers;
 
-use Smoren\Yii2\Auth\behaviors\ConfigParamTokenParamAuth;
 use Smoren\Yii2\Auth\behaviors\ConstTokenParamAuth;
-use Smoren\Yii2\Auth\behaviors\CustomTokenParamAuth;
-use Smoren\Yii2\Auth\behaviors\UserTokenParamAuth;
 
 /**
  * Базовый класс API контроллера с авторизацией

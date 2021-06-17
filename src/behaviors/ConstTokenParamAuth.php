@@ -3,8 +3,6 @@
 namespace Smoren\Yii2\Auth\behaviors;
 
 use Smoren\Yii2\Auth\exceptions\TokenException;
-use Yii;
-use yii\helpers\ArrayHelper;
 
 /**
  * Поведение для авторизации через кастомное сравнение с правильным токеном
