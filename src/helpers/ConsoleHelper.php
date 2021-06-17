@@ -7,7 +7,6 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidRouteException;
 use yii\console\Exception;
-use yii\console\Response;
 use yii\web\Application;
 
 class ConsoleHelper
