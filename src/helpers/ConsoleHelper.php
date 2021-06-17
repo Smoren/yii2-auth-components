@@ -12,6 +12,8 @@ use yii\web\Application;
 
 class ConsoleHelper
 {
+    protected static $isContextEmulated = false;
+
     /**
      * @param string $controllerClass
      * @param string $action
@@ -23,7 +25,7 @@ class ConsoleHelper
      */
     public static function callWebAction(string $controllerClass, string $action, ...$params)
     {
-        static::emulateWebContext();
+        static::emulateWebContext(false);
         [Yii::$app->controllerNamespace, $controller] = static::parseControllerName($controllerClass);
 
         return Yii::$app->runAction("{$controller}/{$action}", $params)->data;
@@ -44,11 +46,16 @@ class ConsoleHelper
      * @return Application
      * @throws InvalidConfigException
      */
-    public static function emulateWebContext(): Application
+    public static function emulateWebContext(bool $force = true): Application
     {
+        if(!$force && static::$isContextEmulated) {
+            return Yii::$app;
+        }
+
         $configPath = Yii::getAlias('@app/config');
         $webConfig = require("{$configPath}/web.php");
         Yii::$app = new Application($webConfig);
+        static::$isContextEmulated = true;
 
         return Yii::$app;
     }
