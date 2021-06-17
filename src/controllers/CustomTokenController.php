@@ -31,5 +31,5 @@ abstract class CustomTokenController extends BaseController
      * Получение валидного токена
      * @return mixed
      */
-    abstract protected function getValidToken();
+    abstract protected function getValidToken(): string;
 }

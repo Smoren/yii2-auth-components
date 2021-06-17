@@ -15,9 +15,9 @@ class ConstTokenParamAuth extends CustomTokenParamAuth
     protected $token;
 
     /**
-     * @param $token
+     * @param string $token
      */
-    public function setToken($token)
+    public function setToken(string $token)
     {
         $this->token = $token;
     }
