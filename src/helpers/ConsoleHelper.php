@@ -60,4 +60,24 @@ class ConsoleHelper
 
         return Yii::$app;
     }
+
+    /**
+     * @param array $params
+     * @throws InvalidConfigException
+     */
+    public static function setWebRequestQueryParams(array $params)
+    {
+        static::emulateWebContext(false);
+        Yii::$app->request->setQueryParams($params);
+    }
+
+    /**
+     * @param array $params
+     * @throws InvalidConfigException
+     */
+    public static function setWebRequestBodyParams(array $params)
+    {
+        static::emulateWebContext(false);
+        Yii::$app->request->setBodyParams($params);
+    }
 }
