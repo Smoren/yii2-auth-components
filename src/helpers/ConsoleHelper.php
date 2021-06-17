@@ -21,7 +21,7 @@ class ConsoleHelper
      * @throws InvalidConfigException
      * @throws InvalidRouteException
      */
-    public static function callAction(string $controllerClass, string $action, ...$params)
+    public static function callWebAction(string $controllerClass, string $action, ...$params)
     {
         static::emulateWebContext();
         [Yii::$app->controllerNamespace, $controller] = static::parseControllerName($controllerClass);
