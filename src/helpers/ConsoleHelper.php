@@ -24,20 +24,20 @@ class ConsoleHelper
     public static function callAction(string $controllerClass, string $action, ...$params)
     {
         static::emulateWebContext();
-        Yii::$app->controllerNamespace = static::getNamespace($controllerClass);
+        [Yii::$app->controllerNamespace, $controller] = static::parseControllerName($controllerClass);
 
-        return Yii::$app->runAction($action, $params)->data;
+        return Yii::$app->runAction("{$controller}/{$action}", $params)->data;
     }
 
     /**
      * @param string $controllerClass
-     * @return string
+     * @return array
      */
-    public static function getNamespace(string $controllerClass): string
+    public static function parseControllerName(string $controllerClass): array
     {
         $buf = explode('\\', $controllerClass);
-        array_pop($buf);
-        return implode('\\', $buf);
+        $controller = strtolower(str_replace('Controller', '', array_pop($buf));
+        return [implode('\\', $buf), $controller];
     }
 
     /**
