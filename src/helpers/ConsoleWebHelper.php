@@ -4,6 +4,7 @@ namespace Smoren\Yii2\Auth\helpers;
 
 
 use Smoren\Yii2\Auth\exceptions\ApiException;
+use Smoren\Yii2\Auth\structs\StatusCode;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidRouteException;
@@ -33,9 +34,9 @@ class ConsoleWebHelper
 
         /** @var Response $resp */
         $resp = Yii::$app->runAction("{$controller}/{$action}", $params);
-        if((int)$resp->statusCode !== 200) {
+        if((int)$resp->statusCode !== StatusCode::OK) {
             $statusCode = $resp->statusCode;
-            $resp->statusCode = 200;
+            $resp->statusCode = StatusCode::OK;
             throw new ApiException($resp->data['message'], $statusCode, null, $resp->data['data'], $resp->data['debug'] ?? null);
         }
 
