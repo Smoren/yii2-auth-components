@@ -43,6 +43,7 @@ class ConsoleHelper
     }
 
     /**
+     * @param bool $force
      * @return Application
      * @throws InvalidConfigException
      */
