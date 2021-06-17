@@ -36,7 +36,7 @@ class ConsoleHelper
     public static function parseControllerName(string $controllerClass): array
     {
         $buf = explode('\\', $controllerClass);
-        $controller = strtolower(str_replace('Controller', '', array_pop($buf));
+        $controller = strtolower(str_replace('Controller', '', array_pop($buf)));
         return [implode('\\', $buf), $controller];
     }
 
