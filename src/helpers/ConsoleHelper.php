@@ -47,12 +47,8 @@ class ConsoleHelper
     public static function emulateWebContext(): Application
     {
         $configPath = Yii::getAlias('@app/config');
-
-        $consoleConfig = require("{$configPath}/console.php");
         $webConfig = require("{$configPath}/web.php");
-
-        $consoleConfig['id'] = $webConfig['id'];
-        Yii::$app = new Application($consoleConfig);
+        Yii::$app = new Application($webConfig);
 
         return Yii::$app;
     }
