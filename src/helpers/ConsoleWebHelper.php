@@ -3,12 +3,14 @@
 namespace Smoren\Yii2\Auth\helpers;
 
 
+use Smoren\Yii2\Auth\exceptions\ApiException;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidRouteException;
 use yii\console\Exception;
 use yii\helpers\Inflector;
 use yii\web\Application;
+use yii\web\Response;
 
 class ConsoleWebHelper
 {
@@ -22,13 +24,20 @@ class ConsoleWebHelper
      * @throws Exception
      * @throws InvalidConfigException
      * @throws InvalidRouteException
+     * @throws ApiException
      */
     public static function callWebAction(string $controllerClass, string $action, array $params = [])
     {
         static::emulateWebContext(false);
         [Yii::$app->controllerNamespace, $controller] = static::parseControllerName($controllerClass);
 
-        return Yii::$app->runAction("{$controller}/{$action}", $params)->data;
+        /** @var Response $resp */
+        $resp = Yii::$app->runAction("{$controller}/{$action}", $params);
+        if((int)$resp->statusCode !== 200) {
+            throw new ApiException($resp->data['message'], $resp->statusCode, null, $resp->data['data'], $resp->data['debug'] ?? null);
+        }
+
+        return $resp->data;
     }
 
     /**
@@ -56,6 +65,7 @@ class ConsoleWebHelper
         $configPath = Yii::getAlias('@app/config');
         $webConfig = require("{$configPath}/web.php");
         Yii::$app = new Application($webConfig);
+        Yii::$app->session->open();
         static::$isContextEmulated = true;
 
         return Yii::$app;
