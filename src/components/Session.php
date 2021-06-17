@@ -147,7 +147,6 @@ abstract class Session extends DbSession
     public function closeSession()
     {
         if($this->dbSession) {
-
             if($this->needUpdateLastActivity) {
                 $lastActivity = (new DateTime())->getTimestamp();
                 $this->dbSession->setLastActivity($lastActivity);
