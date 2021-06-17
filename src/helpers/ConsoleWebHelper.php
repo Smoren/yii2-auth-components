@@ -34,7 +34,9 @@ class ConsoleWebHelper
         /** @var Response $resp */
         $resp = Yii::$app->runAction("{$controller}/{$action}", $params);
         if((int)$resp->statusCode !== 200) {
-            throw new ApiException($resp->data['message'], $resp->statusCode, null, $resp->data['data'], $resp->data['debug'] ?? null);
+            $statusCode = $resp->statusCode;
+            $resp->statusCode = 200;
+            throw new ApiException($resp->data['message'], $statusCode, null, $resp->data['data'], $resp->data['debug'] ?? null);
         }
 
         return $resp->data;
