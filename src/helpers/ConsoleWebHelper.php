@@ -10,7 +10,7 @@ use yii\console\Exception;
 use yii\helpers\Inflector;
 use yii\web\Application;
 
-class ConsoleHelper
+class ConsoleWebHelper
 {
     protected static $isContextEmulated = false;
 
