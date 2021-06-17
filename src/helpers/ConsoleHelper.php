@@ -17,13 +17,13 @@ class ConsoleHelper
     /**
      * @param string $controllerClass
      * @param string $action
-     * @param ...$params
+     * @param array $params
      * @return int|mixed|Response
      * @throws Exception
      * @throws InvalidConfigException
      * @throws InvalidRouteException
      */
-    public static function callWebAction(string $controllerClass, string $action, ...$params)
+    public static function callWebAction(string $controllerClass, string $action, array $params)
     {
         static::emulateWebContext(false);
         [Yii::$app->controllerNamespace, $controller] = static::parseControllerName($controllerClass);
