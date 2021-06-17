@@ -7,6 +7,7 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\InvalidRouteException;
 use yii\console\Exception;
+use yii\helpers\Inflector;
 use yii\web\Application;
 
 class ConsoleHelper
@@ -37,7 +38,7 @@ class ConsoleHelper
     public static function parseControllerName(string $controllerClass): array
     {
         $buf = explode('\\', $controllerClass);
-        $controller = strtolower(str_replace('Controller', '', array_pop($buf)));
+        $controller = Inflector::camel2id(str_replace('Controller', '', array_pop($buf)));
         return [implode('\\', $buf), $controller];
     }
 
