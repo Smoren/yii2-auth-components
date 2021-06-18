@@ -3,6 +3,7 @@
 namespace Smoren\Yii2\Auth\behaviors;
 
 use Smoren\ExtendedExceptions\BaseException;
+use Smoren\Yii2\Auth\components\Session;
 use Smoren\Yii2\Auth\components\SessionManager;
 use Smoren\Yii2\Auth\exceptions\ApiException;
 use Smoren\Yii2\Auth\exceptions\SessionException;
@@ -69,9 +70,10 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
      */
     public function handleFailure($response)
     {
-        if(isset(Yii::$app->session->needUpdateLastActivity)) {
-            Yii::$app->session->needUpdateLastActivity = false;
-        }
+        /** @var Session $session */
+        $session = Yii::$app->session;
+        $session->disableUpdateLastActivity();
+
         throw new ApiException('unauthorized', $this->throwableCode, null, $this->throwableData);
     }
 

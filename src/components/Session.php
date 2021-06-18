@@ -22,10 +22,6 @@ abstract class Session extends DbSession
      */
     protected static $dbSessionClass;
     /**
-     * @var bool Нужно ли обновлять время последней активности пользователя
-     */
-    public $needUpdateLastActivity = true;
-    /**
      * @var bool Флаг открытия сессии
      */
     protected $beenOpened = false;
@@ -37,6 +33,10 @@ abstract class Session extends DbSession
      * @var resource Указатель на файл сессии
      */
     protected $fileHandler;
+    /**
+     * @var bool Нужно ли обновлять время последней активности пользователя
+     */
+    protected $needUpdateLastActivity = true;
 
     /**
      * Вернет путь до файла сессии
@@ -80,6 +80,15 @@ abstract class Session extends DbSession
         }
 
         parent::open();
+    }
+
+    /**
+     * @return $this
+     */
+    public function disableUpdateLastActivity(): self
+    {
+        $this->needUpdateLastActivity = false;
+        return $this;
     }
 
     /**
