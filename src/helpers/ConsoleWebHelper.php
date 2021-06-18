@@ -37,7 +37,7 @@ class ConsoleWebHelper
         if((int)$resp->statusCode !== StatusCode::OK) {
             $statusCode = $resp->statusCode;
             $resp->statusCode = StatusCode::OK;
-            throw new ApiException($resp->data['message'], $statusCode, null, $resp->data['data'], $resp->data['debug'] ?? null);
+            throw new ApiException($resp->data['message'], $statusCode, null, $resp->data['data'] ?? [], $resp->data['debug'] ?? []);
         }
 
         return $resp->data;
