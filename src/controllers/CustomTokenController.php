@@ -10,6 +10,7 @@ use Smoren\Yii2\Auth\behaviors\ConstTokenParamAuth;
 abstract class CustomTokenController extends BaseController
 {
     protected static $except = ['options', 'OPTIONS'];
+    protected static $useEncryption = false;
 
     /**
      * @inheritdoc
@@ -21,7 +22,7 @@ abstract class CustomTokenController extends BaseController
             'class' => ConstTokenParamAuth::class,
             'token' => $this->getValidToken(),
             'except' => static::$except,
-            'useEncryption' => false,
+            'useEncryption' => static::$useEncryption,
         ];
 
         return $behaviors;
