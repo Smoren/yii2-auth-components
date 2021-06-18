@@ -5,6 +5,7 @@ namespace Smoren\Yii2\Auth\components;
 use DateTime;
 use Exception;
 use Smoren\ExtendedExceptions\BadDataException;
+use Smoren\ExtendedExceptions\BaseException;
 use Smoren\Yii2\Auth\exceptions\SessionException;
 use Smoren\Yii2\Auth\models\UserSessionInterface;
 use Yii;
@@ -38,6 +39,23 @@ abstract class Session extends DbSession
     protected $fileHandler;
 
     /**
+     * Вернет путь до файла сессии
+     * @param string $token
+     * @return string
+     * @throws \yii\base\Exception
+     */
+    public static function getFilePath(string $token): string
+    {
+        $path = ini_get('session.save_path');
+        if(!$path) {
+            $path = Yii::getAlias('@runtime/sessions');
+            FileHelper::createDirectory($path);
+        }
+
+        return $path . DIRECTORY_SEPARATOR . "phpsessid_{$token}";
+    }
+
+    /**
      * @param $token
      * @throws \yii\base\Exception
      */
@@ -53,8 +71,7 @@ abstract class Session extends DbSession
             return;
         }
 
-        $this->fileHandler = fopen(static::getFilePath($token), 'wb');
-        flock($this->fileHandler, LOCK_EX);
+        $this->lock($token);
 
         try {
             $this->dbSession = static::$dbSessionClass::getByToken($token);
@@ -72,23 +89,6 @@ abstract class Session extends DbSession
     public function open()
     {
         return null;
-    }
-
-    /**
-     * Вернет путь до файла сессии
-     * @param string $token
-     * @return string
-     * @throws \yii\base\Exception
-     */
-    public static function getFilePath(string $token): string
-    {
-        $path = ini_get('session.save_path');
-        if(!$path) {
-            $path = Yii::getAlias('@runtime/sessions');
-            FileHelper::createDirectory($path);
-        }
-
-        return $path . DIRECTORY_SEPARATOR . "phpsessid_{$token}";
     }
 
     /**
@@ -113,15 +113,8 @@ abstract class Session extends DbSession
             return true;
         }
 
-        $this->dbSession->setData($data);
-
-        if(YII_ENV !== 'test') {
-            try {
-                $this->dbSession->save();
-            } catch(BadDataException $e) {
-                throw new SessionException('cannot save session', SessionException::STATUS_LOGIC_ERROR);
-            }
-        }
+        $this->setData($data);
+        $this->save();
 
         return true;
     }
@@ -146,6 +139,62 @@ abstract class Session extends DbSession
      */
     public function closeSession()
     {
+        $this->save();
+        $this->unlock();
+
+        return parent::closeSession();
+    }
+
+    /**
+     * Отменяем перегенерацию ID сессии
+     * @inheritdoc
+     */
+    public function regenerateID($deleteOldSession = false)
+    {
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function gcSession($maxLifetime)
+    {
+        static::$dbSessionClass::clearOldSessions();
+        return true;
+    }
+
+    /**
+     * @param string $token
+     * @return $this
+     * @throws \yii\base\Exception
+     */
+    protected function lock(string $token): self
+    {
+        $this->fileHandler = fopen(static::getFilePath($token), 'wb');
+        flock($this->fileHandler, LOCK_EX);
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function unlock(): self
+    {
+        if($this->fileHandler !== null) {
+            flock($this->fileHandler, LOCK_UN);
+            fclose($this->fileHandler);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     * @throws SessionException
+     */
+    protected function save(): self
+    {
         if($this->dbSession) {
             if($this->needUpdateLastActivity) {
                 $lastActivity = (new DateTime())->getTimestamp();
@@ -159,30 +208,16 @@ abstract class Session extends DbSession
             }
         }
 
-        if($this->fileHandler !== null) {
-            flock($this->fileHandler, LOCK_UN);
-            fclose($this->fileHandler);
-        }
-
-        return parent::closeSession();
+        return $this;
     }
 
     /**
-     * Отменяем перегенерацию ID сессии
-     * @inheritdoc
+     * @param $data
+     * @return $this
      */
-    public function regenerateID($deleteOldSession = false)
+    protected function setData($data): self
     {
-
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function gcSession($maxLifetime)
-    {
-        static::$dbSessionClass::clearOldSessions();
-
-        return true;
+        $this->dbSession->setData($data);
+        return $this;
     }
 }
