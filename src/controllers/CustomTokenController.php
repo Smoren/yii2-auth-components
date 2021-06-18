@@ -10,19 +10,23 @@ use Smoren\Yii2\Auth\behaviors\ConstTokenParamAuth;
 abstract class CustomTokenController extends BaseController
 {
     protected static $except = ['options', 'OPTIONS'];
-    protected static $useEncryption = false;
 
     /**
      * @inheritdoc
      */
     public function behaviors()
     {
+        $encryptionParams = $this->getEncryptionParams();
+
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => ConstTokenParamAuth::class,
             'token' => $this->getValidToken(),
             'except' => static::$except,
-            'useEncryption' => static::$useEncryption,
+            'useEncryption' => $encryptionParams !== null,
+            'encryptionParamsGetter' => function() {
+                return $this->getEncryptionParams();
+            },
         ];
 
         return $behaviors;
@@ -33,4 +37,12 @@ abstract class CustomTokenController extends BaseController
      * @return mixed
      */
     abstract protected function getValidToken(): string;
+
+    /**
+     * @return array
+     */
+    protected function getEncryptionParams(): ?array
+    {
+        return null;
+    }
 }
