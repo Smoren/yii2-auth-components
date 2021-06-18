@@ -88,10 +88,10 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
     }
 
     /**
-     * @param array $params
+     * @param array|null $params
      * @return $this
      */
-    public function setEncryptionParams(array $params): self
+    public function setEncryptionParams(?array $params): self
     {
         $this->encryptionParams = $params;
         return $this;
