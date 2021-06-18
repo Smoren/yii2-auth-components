@@ -15,6 +15,9 @@ use yii\web\Response;
 
 class ConsoleWebHelper
 {
+    /**
+     * @var bool Is web context emulated flag
+     */
     protected static $isContextEmulated = false;
 
     /**
