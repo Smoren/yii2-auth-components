@@ -24,9 +24,7 @@ abstract class CustomTokenController extends BaseController
             'token' => $this->getValidToken(),
             'except' => static::$except,
             'useEncryption' => $encryptionParams !== null,
-            'encryptionParamsGetter' => function() {
-                return $this->getEncryptionParams();
-            },
+            'encryptionParams' => $encryptionParams,
         ];
 
         return $behaviors;

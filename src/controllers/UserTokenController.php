@@ -16,13 +16,24 @@ class UserTokenController extends BaseController
      */
     public function behaviors()
     {
+        $encryptionParams = $this->getEncryptionParams();
+
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => UserTokenParamAuth::class,
             'except' => static::$except,
-            'useEncryption' => false,
+            'useEncryption' => $encryptionParams !== null,
+            'encryptionParams' => $encryptionParams,
         ];
 
         return $behaviors;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getEncryptionParams(): ?array
+    {
+        return null;
     }
 }

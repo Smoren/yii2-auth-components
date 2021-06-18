@@ -28,7 +28,7 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
     /**
      * @var callable|null Функция получения настроек шифрование
      */
-    protected $encryptionParamsGetter = null;
+    protected $encryptionParams = null;
     /**
      * @var User|null
      */
@@ -88,12 +88,12 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
     }
 
     /**
-     * @param callable $value
+     * @param array $params
      * @return $this
      */
-    public function setEncryptionParamsGetter(callable $value): self
+    public function setEncryptionParams(array $params): self
     {
-        $this->encryptionParamsGetter = $value;
+        $this->encryptionParams = $params;
         return $this;
     }
 
@@ -113,7 +113,7 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
     protected function getToken(array $params = []): string
     {
         if($this->useEncryption) {
-            [$secretKey, $encryptedField, $tokenField] = $this->getEncryptedSettings();
+            [$secretKey, $encryptedField, $tokenField] = $this->encryptionParams;
             return AuthHelper::getTokenEncrypted($secretKey, $encryptedField, $tokenField);
         }
 
@@ -134,18 +134,5 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
         SessionManager::open();
 
         return $identity;
-    }
-
-    /**
-     * @return array
-     * @throws TokenException
-     */
-    protected function getEncryptedSettings(): array
-    {
-        if(!is_callable($this->encryptionParamsGetter)) {
-            throw new TokenException('no secret key specified', TokenException::STATUS_LOGIC_ERROR);
-        }
-
-        return ($this->encryptionParamsGetter)($this);
     }
 }
