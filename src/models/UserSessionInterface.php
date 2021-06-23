@@ -61,6 +61,11 @@ interface UserSessionInterface
     public function save($runValidation = true, $attributeNames = null);
 
     /**
+     * @return mixed
+     */
+    public function delete();
+
+    /**
      * Свзяь с пользователем
      * @return ActiveQuery
      */
