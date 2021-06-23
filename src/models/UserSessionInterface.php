@@ -17,12 +17,14 @@ use yii\db\ActiveQuery;
 interface UserSessionInterface
 {
     /**
+     * @param string $token
      * @return UserSessionInterface
      * @throws BadDataException
      */
-    public static function getByToken($token);
+    public static function getByToken(string $token);
 
     /**
+     * @param $userId
      * @return UserSessionInterface
      * @throws BadDataException
      */
@@ -39,11 +41,13 @@ interface UserSessionInterface
     public function getData();
 
     /**
+     * @param $value
      * @return mixed
      */
     public function setData($value);
 
     /**
+     * @param $value
      * @return mixed
      */
     public function setLastActivity($value);

@@ -173,6 +173,14 @@ abstract class Session extends DbSession
     }
 
     /**
+     * @return UserSessionInterface
+     */
+    public function getDbSession()
+    {
+        return $this->dbSession;
+    }
+
+    /**
      * @param string $token
      * @return $this
      * @throws \yii\base\Exception
