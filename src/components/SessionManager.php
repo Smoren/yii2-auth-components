@@ -40,7 +40,7 @@ class SessionManager
         Yii::$app->session->close();
     }
 
-    public static function getCurrentSession()
+    public static function getCurrentSession(): Session
     {
         return Yii::$app->session;
     }
