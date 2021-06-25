@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "da08584ef8e6d97647a7d4c282893a7d",
+    "content-hash": "b6878d72a30eb3b6a8ecb1e6e93c56ff",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -298,6 +298,57 @@
             "time": "2021-04-07T14:15:02+00:00"
         },
         {
+            "name": "smoren/yii2-active-record-explicit",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Smoren/yii2-active-record-explicit.git",
+                "reference": "bcd5f2f50ee50a7278f5e467dcd6fccfcfb4ce02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Smoren/yii2-active-record-explicit/zipball/bcd5f2f50ee50a7278f5e467dcd6fccfcfb4ce02",
+                "reference": "bcd5f2f50ee50a7278f5e467dcd6fccfcfb4ce02",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "smoren/extended-exceptions": "1.0.0",
+                "yiisoft/yii2": "~2.0.0"
+            },
+            "default-branch": true,
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "Smoren\\Yii2\\ActiveRecordExplicit\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Smoren",
+                    "email": "ofigate@gmail.com"
+                }
+            ],
+            "description": "Extended and more explicit behavior for ActiveRecord classes for Yii2",
+            "keywords": [
+                "ActiveQuery",
+                "Behavior",
+                "activerecord",
+                "explicit",
+                "extension",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/Smoren/yii2-active-record-explicit/issues",
+                "source": "https://github.com/Smoren/yii2-active-record-explicit/tree/master"
+            },
+            "time": "2021-06-25T11:25:41+00:00"
+        },
+        {
             "name": "yiisoft/yii2",
             "version": "2.0.42.1",
             "source": {
@@ -498,7 +549,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "smoren/yii2-active-record-explicit": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -506,5 +559,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
