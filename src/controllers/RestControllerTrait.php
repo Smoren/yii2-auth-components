@@ -103,7 +103,8 @@ trait RestControllerTrait
         FormValidator::validate($form, ApiException::class);
 
         try {
-            $item = new ($this->getActiveRecordClassName())($form->getLoadedAttributes());
+            $className = $this->getActiveRecordClassName();
+            $item = new $className($form->getLoadedAttributes());
             $item = $this->beforeCreate($item, $form);
             $item->save();
             $this->afterCreate($item, $form);
