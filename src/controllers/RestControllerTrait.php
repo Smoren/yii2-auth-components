@@ -73,10 +73,10 @@ trait RestControllerTrait
 
     /**
      * @param string $id
-     * @return ActiveRecord
+     * @return ActiveRecord|mixed
      * @throws ApiException
      */
-    public function actionItem(string $id): ActiveRecord
+    public function actionItem(string $id)
     {
         $this->checkAccess(__FUNCTION__);
 
@@ -92,10 +92,10 @@ trait RestControllerTrait
     }
 
     /**
-     * @return ActiveRecord
+     * @return ActiveRecord|mixed
      * @throws ApiException
      */
-    public function actionCreate(): ActiveRecord
+    public function actionCreate()
     {
         $this->checkAccess(__FUNCTION__);
 
@@ -123,10 +123,10 @@ trait RestControllerTrait
 
     /**
      * @param string $id
-     * @return ActiveRecord
+     * @return ActiveRecord|mixed
      * @throws ApiException
      */
-    public function actionUpdate(string $id): ActiveRecord
+    public function actionUpdate(string $id)
     {
         $this->checkAccess(__FUNCTION__);
 
@@ -138,7 +138,7 @@ trait RestControllerTrait
             $item->setAttributes($form->getLoadedAttributes());
             $item = $this->beforeUpdate($item, $form);
             $item->save();
-            $this->afterUpdate($item, $form);
+            $item = $this->afterUpdate($item, $form);
 
             Yii::$app->response->statusCode = StatusCode::ACCEPTED;
 
@@ -154,10 +154,10 @@ trait RestControllerTrait
 
     /**
      * @param string $id
-     * @return ActiveRecord
+     * @return ActiveRecord|mixed
      * @throws ApiException
      */
-    public function actionDelete(string $id): ActiveRecord
+    public function actionDelete(string $id)
     {
         $this->checkAccess(__FUNCTION__);
 
@@ -166,7 +166,7 @@ trait RestControllerTrait
         try {
             $item = $this->beforeDelete($item);
             $item->delete();
-            $this->afterDelete($item);
+            $item = $this->afterDelete($item);
 
             Yii::$app->response->statusCode = StatusCode::ACCEPTED;
 
@@ -281,9 +281,9 @@ trait RestControllerTrait
      * @override
      * @param ActiveRecord $item
      * @param Model $form
-     * @return ActiveRecord
+     * @return ActiveRecord|mixed
      */
-    protected function afterCreate(ActiveRecord $item, Model $form): ActiveRecord
+    protected function afterCreate(ActiveRecord $item, Model $form)
     {
         return $item;
     }
@@ -303,9 +303,9 @@ trait RestControllerTrait
      * @override
      * @param ActiveRecord $item
      * @param Model $form
-     * @return ActiveRecord
+     * @return ActiveRecord|mixed
      */
-    protected function afterUpdate(ActiveRecord $item, Model $form): ActiveRecord
+    protected function afterUpdate(ActiveRecord $item, Model $form)
     {
         return $item;
     }
@@ -322,10 +322,10 @@ trait RestControllerTrait
 
     /**
      * @override
-     * @param ActiveRecord $item
-     * @return ActiveRecord
+     * @param mixed $item
+     * @return ActiveRecord|mixed
      */
-    protected function afterDelete(ActiveRecord $item): ActiveRecord
+    protected function afterDelete(ActiveRecord $item)
     {
         return $item;
     }
