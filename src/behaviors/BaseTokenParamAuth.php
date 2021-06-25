@@ -12,6 +12,7 @@ use Smoren\Yii2\Auth\helpers\AuthHelper;
 use Smoren\Yii2\Auth\structs\StatusCode;
 use Throwable;
 use Yii;
+use yii\base\Exception;
 use yii\filters\auth\QueryParamAuth;
 use yii\web\IdentityInterface;
 use yii\web\User;
@@ -124,8 +125,9 @@ abstract class BaseTokenParamAuth extends QueryParamAuth
      * @param string|null $token
      * @param User $user
      * @return IdentityInterface|null
-     * @throws TokenException
      * @throws SessionException
+     * @throws TokenException
+     * @throws Exception
      */
     protected function processToken(string $token, User $user): IdentityInterface
     {
