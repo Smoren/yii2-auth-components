@@ -131,7 +131,7 @@ trait RestControllerTrait
         $this->checkAccess(__FUNCTION__);
 
         $item = $this->getItem($id);
-        $form = $this->getUpdateForm();
+        $form = $this->getUpdateForm($id);
         FormValidator::validate($form, ApiException::class);
 
         try {
@@ -186,9 +186,10 @@ trait RestControllerTrait
     abstract protected function getCreateForm(): Model;
 
     /**
+     * @param string $itemId
      * @return Model
      */
-    abstract protected function getUpdateForm(): Model;
+    abstract protected function getUpdateForm(string $itemId): Model;
 
     /**
      * @return ActiveRecord::class
