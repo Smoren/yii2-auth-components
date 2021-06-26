@@ -357,7 +357,7 @@ trait RestControllerTrait
      */
     protected function getItemQuery(string $id): ActiveQuery
     {
-        return $this->beforeGettingItem($this->accessFilter($this->getActiveRecordClassName()::find()->byId($id)));
+        return $this->beforeGettingItem($this->accessFilter($this->getActiveRecordClassName()::find())->byId($id));
     }
 
     /**
@@ -368,7 +368,7 @@ trait RestControllerTrait
     protected function getItem(string $id): ActiveRecord
     {
         try {
-            return $this->accessFilter($this->getActiveRecordClassName()::find()->byId($id))->one();
+            return $this->accessFilter($this->getActiveRecordClassName()::find())->byId($id)->one();
         } catch(DbException $e) {
             throw new ApiException('not found', StatusCode::NOT_FOUND, $e, $e->getData());
         } catch(BaseException $e) {
