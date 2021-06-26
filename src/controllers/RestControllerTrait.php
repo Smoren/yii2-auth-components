@@ -87,7 +87,7 @@ trait RestControllerTrait
         } catch(BaseException $e) {
             throw new ApiException('server error', StatusCode::INTERNAL_SERVER_ERROR, $e, $e->getData());
         } catch(Throwable $e) {
-            throw new ApiException('not acceptable', StatusCode::INTERNAL_SERVER_ERROR, $e);
+            throw new ApiException('server error', StatusCode::INTERNAL_SERVER_ERROR, $e);
         }
     }
 
@@ -117,7 +117,7 @@ trait RestControllerTrait
         } catch(BaseException $e) {
             throw new ApiException('server error', StatusCode::INTERNAL_SERVER_ERROR, $e, $e->getData());
         } catch(Throwable $e) {
-            throw new ApiException('not acceptable', StatusCode::INTERNAL_SERVER_ERROR, $e);
+            throw new ApiException('server error', StatusCode::INTERNAL_SERVER_ERROR, $e);
         }
     }
 
@@ -148,7 +148,7 @@ trait RestControllerTrait
         } catch(BaseException $e) {
             throw new ApiException('server error', StatusCode::INTERNAL_SERVER_ERROR, $e, $e->getData());
         } catch(Throwable $e) {
-            throw new ApiException('not acceptable', StatusCode::INTERNAL_SERVER_ERROR, $e);
+            throw new ApiException('server error', StatusCode::INTERNAL_SERVER_ERROR, $e);
         }
     }
 
@@ -176,7 +176,7 @@ trait RestControllerTrait
         } catch(BaseException $e) {
             throw new ApiException('server error', StatusCode::INTERNAL_SERVER_ERROR, $e, $e->getData());
         } catch(Throwable $e) {
-            throw new ApiException('not acceptable', StatusCode::INTERNAL_SERVER_ERROR, $e);
+            throw new ApiException('server error', StatusCode::INTERNAL_SERVER_ERROR, $e);
         }
     }
 
@@ -374,7 +374,7 @@ trait RestControllerTrait
         } catch(BaseException $e) {
             throw new ApiException('server error', StatusCode::INTERNAL_SERVER_ERROR, $e, $e->getData());
         } catch(Throwable $e) {
-            throw new ApiException('not acceptable', StatusCode::INTERNAL_SERVER_ERROR, $e);
+            throw new ApiException('server error', StatusCode::INTERNAL_SERVER_ERROR, $e);
         }
     }
 
