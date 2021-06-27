@@ -107,7 +107,7 @@ trait RestControllerTrait
             $item = new $className($form->getLoadedAttributes());
             $item = $this->beforeCreate($item, $form);
             $item->save();
-            $this->afterCreate($item, $form);
+            $item = $this->afterCreate($item, $form);
 
             Yii::$app->response->statusCode = StatusCode::CREATED;
 
