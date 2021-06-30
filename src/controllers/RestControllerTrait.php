@@ -24,6 +24,7 @@ trait RestControllerTrait
     protected static $collectionActionMethodMap = [
         'collection' => 'GET',
         'create' => 'POST',
+        'options' => 'OPTIONS',
     ];
     /**
      * @var string[]
@@ -32,6 +33,7 @@ trait RestControllerTrait
         'item' => 'GET',
         'update' => 'PUT',
         'delete' => 'DELETE',
+        'options' => 'OPTIONS',
     ];
 
     /**

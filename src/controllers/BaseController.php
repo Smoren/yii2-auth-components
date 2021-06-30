@@ -46,14 +46,17 @@ abstract class BaseController extends Controller
      */
     public function actions()
     {
-        $collectionOptions = Yii::$app->params['access-control-actions'] ?? ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'];
+        $actions = parent::actions();
 
-        return [
-            'options' => [
+        if(!method_exists($this, 'actionOptions')) {
+            $collectionOptions = Yii::$app->params['access-control-actions'] ?? ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'];
+            $actions['options'] = [
                 'class' => OptionsAction::class,
                 'collectionOptions' => $collectionOptions,
-            ],
-        ];
+            ];
+        }
+
+        return $actions;
     }
 
     /**
