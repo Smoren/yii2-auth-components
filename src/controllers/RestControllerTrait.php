@@ -19,6 +19,22 @@ use Yii;
 trait RestControllerTrait
 {
     /**
+     * @var string[]
+     */
+    protected static $collectionActionMethodMap = [
+        'collection' => 'GET',
+        'create' => 'POST',
+    ];
+    /**
+     * @var string[]
+     */
+    protected static $itemActionMethodMap = [
+        'item' => 'GET',
+        'update' => 'PUT',
+        'delete' => 'DELETE',
+    ];
+
+    /**
      * @param string $apiPath
      * @param string $controllerPath
      * @param string $itemIdValidationRegexp
@@ -58,6 +74,18 @@ trait RestControllerTrait
              * @see RestControllerTrait::actionDelete()
              */
             "DELETE {$apiPath}/<id:{$itemIdValidationRegexp}>" => "{$controllerPath}/delete",
+
+            /**
+             * API options коллекциии
+             * @see RestControllerTrait::actionOptions()
+             */
+            "GET {$apiPath}" => "{$controllerPath}/options",
+
+            /**
+             * API options элемента
+             * @see RestControllerTrait::actionOptions()
+             */
+            "GET {$apiPath}/<id:{$itemIdValidationRegexp}>" => "{$controllerPath}/options",
         ];
     }
 
@@ -178,6 +206,34 @@ trait RestControllerTrait
         } catch(Throwable $e) {
             throw new ApiException('server error', StatusCode::INTERNAL_SERVER_ERROR, $e);
         }
+    }
+
+    /**
+     * @param string|null $id
+     * @throws ApiException
+     */
+    public function actionOptions(?string $id = null)
+    {
+        if(Yii::$app->getRequest()->getMethod() !== 'OPTIONS') {
+            throw new ApiException('method not allowed', StatusCode::METHOD_NOT_ALLOWED);
+        }
+
+        if($id === null) {
+            $actionMethodMap = static::$collectionActionMethodMap;
+        } else {
+            $actionMethodMap = static::$itemActionMethodMap;
+        }
+
+        foreach($this->getDisabledActions() as $disabledAction) {
+            if(isset($actionMethodMap)) {
+                unset($actionMethodMap[$disabledAction]);
+            }
+        }
+
+        $options = array_values($actionMethodMap);
+        $headers = Yii::$app->getResponse()->getHeaders();
+        $headers->set('Allow', implode(', ', $options));
+        $headers->set('Access-Control-Allow-Methods', implode(', ', $options));
     }
 
     /**
