@@ -46,7 +46,7 @@ trait RestControllerTrait
     {
         return [
             /**
-             * API получения коллекциии
+             * API получения коллекции
              * @see RestControllerTrait::actionCollection()
              */
             "GET {$apiPath}" => "{$controllerPath}/collection",
