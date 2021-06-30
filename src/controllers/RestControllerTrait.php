@@ -79,13 +79,13 @@ trait RestControllerTrait
              * API options коллекциии
              * @see RestControllerTrait::actionOptions()
              */
-            "GET {$apiPath}" => "{$controllerPath}/options",
+            "OPTIONS {$apiPath}" => "{$controllerPath}/options",
 
             /**
              * API options элемента
              * @see RestControllerTrait::actionOptions()
              */
-            "GET {$apiPath}/<id:{$itemIdValidationRegexp}>" => "{$controllerPath}/options",
+            "OPTIONS {$apiPath}/<id:{$itemIdValidationRegexp}>" => "{$controllerPath}/options",
         ];
     }
 
