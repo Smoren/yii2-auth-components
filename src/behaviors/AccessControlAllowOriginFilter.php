@@ -21,7 +21,7 @@ class AccessControlAllowOriginFilter extends ActionFilter
     public function beforeAction($action)
     {
         $frontDomain = Yii::$app->request->headers->get('X-Frontend-Domain');
-        if(in_array($frontDomain, $this->origins)) {
+        if($frontDomain !== null && (in_array($frontDomain, $this->origins) || in_array('*', $this->origins))) {
             Yii::$app->response->headers->set('Access-Control-Allow-Origin', $frontDomain);
         }
 

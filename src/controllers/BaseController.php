@@ -23,7 +23,7 @@ abstract class BaseController extends Controller
      */
     public function behaviors()
     {
-        $behaviors = parent::behaviors();
+        $behaviors = [];
 
         $corsSettings = $this->getCorsSettings();
 
@@ -37,7 +37,7 @@ abstract class BaseController extends Controller
             'origins' => $corsSettings['origins'] ?? ['*'],
         ];
 
-        return $behaviors;
+        return array_merge($behaviors, parent::behaviors());
     }
 
     /**
