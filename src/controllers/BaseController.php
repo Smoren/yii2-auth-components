@@ -2,7 +2,6 @@
 
 namespace Smoren\Yii2\Auth\controllers;
 
-use Smoren\Yii2\Auth\behaviors\AccessControlAllowOriginFilter;
 use Smoren\Yii2\Auth\components\OptionsAction;
 use Smoren\Yii2\Auth\exceptions\ApiException;
 use Smoren\Yii2\Auth\structs\StatusCode;
@@ -30,11 +29,6 @@ abstract class BaseController extends Controller
         $behaviors['corsFilter'] = [
             'class' => Cors::class,
             'cors' => $corsSettings,
-        ];
-
-        $behaviors['accessOrigin'] = [
-            'class' => AccessControlAllowOriginFilter::class,
-            'origins' => $corsSettings['origins'] ?? ['*'],
         ];
 
         return array_merge($behaviors, parent::behaviors());
