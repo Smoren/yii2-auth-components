@@ -76,7 +76,7 @@ trait RestControllerTrait
             "DELETE {$apiPath}/<id:{$itemIdValidationRegexp}>" => "{$controllerPath}/delete",
 
             /**
-             * API options коллекциии
+             * API options коллекции
              * @see RestControllerTrait::actionOptions()
              */
             "OPTIONS {$apiPath}" => "{$controllerPath}/options",
