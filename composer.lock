@@ -32,7 +32,7 @@
             "version": "3.5.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:jquery/jquery-dist.git",
+                "url": "https://github.com/jquery/jquery-dist.git",
                 "reference": "4c0e4becb8263bb5b3e6dadc448d8e7305ef8215"
             },
             "dist": {
@@ -303,12 +303,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Smoren/yii2-active-record-explicit.git",
-                "reference": "bcd5f2f50ee50a7278f5e467dcd6fccfcfb4ce02"
+                "reference": "993b289f236c63dc9ddac8bf91d616249dfa61f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Smoren/yii2-active-record-explicit/zipball/bcd5f2f50ee50a7278f5e467dcd6fccfcfb4ce02",
-                "reference": "bcd5f2f50ee50a7278f5e467dcd6fccfcfb4ce02",
+                "url": "https://api.github.com/repos/Smoren/yii2-active-record-explicit/zipball/993b289f236c63dc9ddac8bf91d616249dfa61f4",
+                "reference": "993b289f236c63dc9ddac8bf91d616249dfa61f4",
                 "shasum": ""
             },
             "require": {
@@ -346,7 +346,7 @@
                 "issues": "https://github.com/Smoren/yii2-active-record-explicit/issues",
                 "source": "https://github.com/Smoren/yii2-active-record-explicit/tree/master"
             },
-            "time": "2021-06-25T11:25:41+00:00"
+            "time": "2021-06-30T13:45:39+00:00"
         },
         {
             "name": "yiisoft/yii2",
