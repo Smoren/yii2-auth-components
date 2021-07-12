@@ -25,13 +25,13 @@ class ConsoleWebHelper
      * @param string $action
      * @param array $params
      * @param string $method
-     * @return mixed
+     * @return Response
      * @throws Exception
      * @throws InvalidConfigException
      * @throws InvalidRouteException
      * @throws ApiException
      */
-    public static function callWebAction(string $controllerClass, string $action, array $params = [], string $method = 'GET')
+    public static function callWebAction(string $controllerClass, string $action, array $params = [], string $method = 'GET'): Response
     {
         static::emulateWebContext(false);
         $_SERVER['REQUEST_METHOD'] = $method;
@@ -52,7 +52,7 @@ class ConsoleWebHelper
             throw new ApiException($resp->data['message'], $statusCode, null, $resp->data['data'] ?? [], $resp->data['debug'] ?? []);
         }
 
-        return $resp->data;
+        return $resp;
     }
 
     /**
