@@ -275,11 +275,22 @@ trait RestControllerTrait
 
     /**
      * @override
-     * @param $query ActiveQuery
-     * @param $form Model
+     * @param ActiveQuery $query
+     * @param Model|null $form
      * @return ActiveQuery
      */
     protected function userFilter(ActiveQuery $query, ?Model $form): ActiveQuery
+    {
+        return $query;
+    }
+
+    /**
+     * @override
+     * @param ActiveQuery $query
+     * @param Model|null $form
+     * @return ActiveQuery
+     */
+    protected function userOrder(ActiveQuery $query, ?Model $form): ActiveQuery
     {
         return $query;
     }
@@ -407,7 +418,12 @@ trait RestControllerTrait
      */
     protected function getCollectionQuery(): ActiveQuery
     {
-        return $this->beforeGettingCollection($this->filter($this->getActiveRecordClassName()::find()));
+        return $this->beforeGettingCollection(
+            $this->userOrder(
+                $this->filter($this->getActiveRecordClassName()::find()),
+                $this->getFilterForm()
+            )
+        );
     }
 
     /**
