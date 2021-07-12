@@ -275,6 +275,15 @@ trait RestControllerTrait
 
     /**
      * @override
+     * @return Model|null
+     */
+    protected function getOrderForm(): ?Model
+    {
+        return null;
+    }
+
+    /**
+     * @override
      * @param ActiveQuery $query
      * @param Model|null $form
      * @return ActiveQuery
@@ -421,7 +430,7 @@ trait RestControllerTrait
         return $this->beforeGettingCollection(
             $this->userOrder(
                 $this->filter($this->getActiveRecordClassName()::find()),
-                $this->getFilterForm()
+                $this->getOrderForm()
             )
         );
     }
