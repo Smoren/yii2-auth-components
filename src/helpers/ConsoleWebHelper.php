@@ -76,11 +76,28 @@ class ConsoleWebHelper
 
         $configPath = Yii::getAlias('@app/config');
         $webConfig = require("{$configPath}/web.php");
+        $webConfig['components']['db']['dsn'] = Yii::$app->db->dsn;
+        $webConfig['components']['db']['username'] = Yii::$app->db->username;
+        $webConfig['components']['db']['password'] = Yii::$app->db->password;
+        $webConfig['components']['db']['charset'] = Yii::$app->db->charset;
+
         Yii::$app = new Application($webConfig);
         Yii::$app->session->open();
+
         static::$isContextEmulated = true;
 
         return Yii::$app;
+    }
+
+    /**
+     * @param string $token
+     * @throws InvalidConfigException
+     */
+    public static function setToken(string $token)
+    {
+        static::setWebRequestQueryParams([
+            'token' => $token,
+        ]);
     }
 
     /**
