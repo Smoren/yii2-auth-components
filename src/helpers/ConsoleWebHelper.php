@@ -46,7 +46,7 @@ class ConsoleWebHelper
 
         /** @var Response $resp */
         $resp = Yii::$app->runAction(implode('/', $arPath), $params);
-        if((int)$resp->statusCode !== StatusCode::OK) {
+        if(!in_array((int)$resp->statusCode, [StatusCode::OK, StatusCode::ACCEPTED, StatusCode::CREATED])) {
             $statusCode = $resp->statusCode;
             $resp->statusCode = StatusCode::OK;
             throw new ApiException($resp->data['message'], $statusCode, null, $resp->data['data'] ?? [], $resp->data['debug'] ?? []);
