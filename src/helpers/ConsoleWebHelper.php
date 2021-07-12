@@ -38,11 +38,22 @@ class ConsoleWebHelper
 
         [Yii::$app->controllerNamespace, $controller] = static::parseControllerName($controllerClass);
 
-        $arPath = [$controller, $action];
+        $arPath = [];
 
-        if(preg_match('/^app\\\modules\\\([^\\\]+)\\\/', Yii::$app->controllerNamespace, $matches)) {
-            array_unshift($arPath, $matches[1]);
+        if(preg_match('/^app\\\modules\\\([\s\S]+)\\\controllers/', Yii::$app->controllerNamespace, $matches)) {
+            foreach(explode('\\', $matches[1]) as $pathItem) {
+                $arPath[] = $pathItem;
+            }
         }
+
+        if(preg_match('/^app\\\[\s\S]+\\\controllers\\\([\s\S]+)$/', Yii::$app->controllerNamespace, $matches)) {
+            foreach(explode('\\', $matches[1]) as $pathItem) {
+                $arPath[] = $pathItem;
+            }
+        }
+
+        $arPath[] = $controller;
+        $arPath[] = $action;
 
         /** @var Response $resp */
         $resp = Yii::$app->runAction(implode('/', $arPath), $params);
