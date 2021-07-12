@@ -35,8 +35,14 @@ class ConsoleWebHelper
         static::emulateWebContext(false);
         [Yii::$app->controllerNamespace, $controller] = static::parseControllerName($controllerClass);
 
+        $arPath = [$controller, $action];
+
+        if(preg_match('/^app\\\modules\\\([^\\\]+)\\\/', Yii::$app->controllerNamespace, $matches)) {
+            array_unshift($arPath, $matches[1]);
+        }
+
         /** @var Response $resp */
-        $resp = Yii::$app->runAction("{$controller}/{$action}", $params);
+        $resp = Yii::$app->runAction(implode('/', $arPath), $params);
         if((int)$resp->statusCode !== StatusCode::OK) {
             $statusCode = $resp->statusCode;
             $resp->statusCode = StatusCode::OK;
