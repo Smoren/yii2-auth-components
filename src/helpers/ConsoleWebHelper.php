@@ -109,8 +109,8 @@ class ConsoleWebHelper
      */
     public static function setToken(string $token)
     {
-        static::setWebRequestQueryParams([
-            'token' => $token,
+        static::addWebRequestHeaders([
+            'X-Auth-Token' => $token,
         ]);
     }
 
@@ -132,5 +132,17 @@ class ConsoleWebHelper
     {
         static::emulateWebContext(false);
         Yii::$app->request->setBodyParams($params);
+    }
+
+    /**
+     * @param array $headers
+     * @throws InvalidConfigException
+     */
+    public static function addWebRequestHeaders(array $headers)
+    {
+        static::emulateWebContext(false);
+        foreach($headers as $key => $val) {
+            Yii::$app->request->headers->add($key, $val);
+        }
     }
 }
