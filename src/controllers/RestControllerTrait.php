@@ -419,7 +419,7 @@ trait RestControllerTrait
     {
         $filterForm = $this->getFilterForm();
 
-        if($validate) {
+        if($filterForm && $validate) {
             FormValidator::validate($filterForm, ApiException::class);
         }
 
