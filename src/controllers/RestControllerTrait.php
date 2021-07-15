@@ -112,6 +112,8 @@ trait RestControllerTrait
 
         try {
             return $this->getItemQuery($id)->one();
+        } catch(ApiException $e) {
+            throw $e;
         } catch(DbException $e) {
             throw new ApiException('not found', StatusCode::NOT_FOUND, $e, $e->getData());
         } catch(BaseException $e) {
@@ -142,6 +144,8 @@ trait RestControllerTrait
             Yii::$app->response->statusCode = StatusCode::CREATED;
 
             return $item;
+        } catch(ApiException $e) {
+            throw $e;
         } catch(DbException $e) {
             throw new ApiException('not acceptable', StatusCode::NOT_ACCEPTABLE, $e, $e->getData());
         } catch(BaseException $e) {
@@ -173,6 +177,8 @@ trait RestControllerTrait
             Yii::$app->response->statusCode = StatusCode::ACCEPTED;
 
             return $item;
+        } catch(ApiException $e) {
+            throw $e;
         } catch(DbException $e) {
             throw new ApiException('not acceptable', StatusCode::NOT_ACCEPTABLE, $e, $e->getData());
         } catch(BaseException $e) {
@@ -201,6 +207,8 @@ trait RestControllerTrait
             Yii::$app->response->statusCode = StatusCode::ACCEPTED;
 
             return $item;
+        } catch(ApiException $e) {
+            throw $e;
         } catch(DbException $e) {
             throw new ApiException('not acceptable', StatusCode::NOT_ACCEPTABLE, $e, $e->getData());
         } catch(BaseException $e) {
