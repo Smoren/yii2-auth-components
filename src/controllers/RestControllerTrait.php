@@ -412,12 +412,19 @@ trait RestControllerTrait
 
     /**
      * @param $query ActiveQuery
+     * @param bool $validate
      * @return ActiveQuery
      */
-    protected function filter($query): ActiveQuery
+    protected function filter($query, bool $validate = false): ActiveQuery
     {
+        $filterForm = $this->getFilterForm();
+
+        if($validate) {
+            FormValidator::validate($filterForm, ApiException::class);
+        }
+
         $query = $this->accessFilter($query);
-        $query = $this->userFilter($query, $this->getFilterForm());
+        $query = $this->userFilter($query, $filterForm);
 
         return $query;
     }
@@ -429,7 +436,7 @@ trait RestControllerTrait
     {
         return $this->beforeGettingCollection(
             $this->userOrder(
-                $this->filter($this->getActiveRecordClassName()::find()),
+                $this->filter($this->getActiveRecordClassName()::find(), true),
                 $this->getOrderForm()
             )
         );
