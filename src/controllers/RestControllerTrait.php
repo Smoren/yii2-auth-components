@@ -98,6 +98,7 @@ trait RestControllerTrait
     public function actionCollection(): ActiveDataProvider
     {
         $this->checkAccess(__FUNCTION__);
+        Yii::$app->response->statusCode = StatusCode::OK;
         return $this->getDataProvider($this->getCollectionQuery());
     }
 
@@ -111,6 +112,7 @@ trait RestControllerTrait
         $this->checkAccess(__FUNCTION__);
 
         try {
+            Yii::$app->response->statusCode = StatusCode::OK;
             return $this->getItemQuery($id)->one();
         } catch(ApiException $e) {
             throw $e;
