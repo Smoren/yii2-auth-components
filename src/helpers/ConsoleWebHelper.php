@@ -57,6 +57,10 @@ class ConsoleWebHelper
 
         /** @var Response $resp */
         $resp = Yii::$app->runAction(implode('/', $arPath), $params);
+
+        static::setWebRequestQueryParams([]);
+        static::setWebRequestBodyParams([]);
+
         if(!in_array((int)$resp->statusCode, [StatusCode::OK, StatusCode::ACCEPTED, StatusCode::CREATED])) {
             $statusCode = $resp->statusCode;
             $resp->statusCode = StatusCode::OK;
