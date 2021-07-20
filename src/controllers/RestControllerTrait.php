@@ -15,6 +15,7 @@ use Smoren\Yii2\Auth\exceptions\ApiException;
 use Smoren\Yii2\Auth\structs\StatusCode;
 use Throwable;
 use Yii;
+use yii\data\BaseDataProvider;
 
 trait RestControllerTrait
 {
@@ -92,10 +93,10 @@ trait RestControllerTrait
     }
 
     /**
-     * @return ActiveDataProvider
+     * @return BaseDataProvider
      * @throws ApiException
      */
-    public function actionCollection(): ActiveDataProvider
+    public function actionCollection(): BaseDataProvider
     {
         $this->checkAccess(__FUNCTION__);
         Yii::$app->response->statusCode = StatusCode::OK;
@@ -327,9 +328,9 @@ trait RestControllerTrait
     /**
      * @override
      * @param ActiveQuery $query
-     * @return ActiveDataProvider
+     * @return BaseDataProvider
      */
-    protected function getDataProvider(ActiveQuery $query): ActiveDataProvider
+    protected function getDataProvider(ActiveQuery $query): BaseDataProvider
     {
         return new ActiveDataProvider([
             'query' => $query,
