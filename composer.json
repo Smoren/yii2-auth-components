@@ -16,8 +16,7 @@
     "smoren/url-security-manager": "1.0.4",
     "smoren/extended-exceptions": "1.0.0",
     "smoren/yii2-active-record-explicit": "dev-master",
-    "ext-json": "*",
-    "ext-pdo": "*"
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {
