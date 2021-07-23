@@ -30,6 +30,7 @@ class ConsoleWebHelper
      * @throws InvalidConfigException
      * @throws InvalidRouteException
      * @throws ApiException
+     * @throws \yii\db\Exception
      */
     public static function callWebAction(string $controllerClass, string $action, array $params = [], string $method = 'GET'): Response
     {
@@ -55,8 +56,16 @@ class ConsoleWebHelper
         $arPath[] = $controller;
         $arPath[] = $action;
 
+        Yii::$app->response->clear();
+        Yii::$app->db->open();
+
         /** @var Response $resp */
         $resp = Yii::$app->runAction(implode('/', $arPath), $params);
+
+        if(Yii::$app->db->transaction !== null) {
+            Yii::$app->db->transaction->commit();
+        }
+        Yii::$app->db->close();
 
         static::setWebRequestQueryParams([]);
         static::setWebRequestBodyParams([]);
