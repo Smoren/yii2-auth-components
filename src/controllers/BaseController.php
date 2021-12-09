@@ -17,6 +17,8 @@ use yii\web\TooManyRequestsHttpException;
  */
 abstract class BaseController extends Controller
 {
+    protected static $except = [];
+
     /**
      * @inheritdoc
      */
@@ -158,6 +160,14 @@ abstract class BaseController extends Controller
         }
 
         return $this->asJson($resp);
+    }
+
+    /**
+     * @return array
+     */
+    public function getMethodsExcept(): array
+    {
+        return static::$except;
     }
 
     /**
