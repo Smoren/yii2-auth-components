@@ -25,17 +25,22 @@ class ConsoleWebHelper
      * @param string $action
      * @param array $params
      * @param string $method
+     * @param string|null $uri
      * @return Response
+     * @throws ApiException
      * @throws Exception
      * @throws InvalidConfigException
      * @throws InvalidRouteException
-     * @throws ApiException
-     * @throws \yii\db\Exception
      */
-    public static function callWebAction(string $controllerClass, string $action, array $params = [], string $method = 'GET'): Response
+    public static function callWebAction(
+        string $controllerClass, string $action, array $params = [],
+        string $method = 'GET', ?string $uri = null
+    ): Response
     {
-        static::emulateWebContext(false);
         $_SERVER['REQUEST_METHOD'] = $method;
+        $_SERVER['REQUEST_URI'] = $uri;
+
+        static::emulateWebContext(false);
 
         [Yii::$app->controllerNamespace, $controller] = static::parseControllerName($controllerClass);
 
