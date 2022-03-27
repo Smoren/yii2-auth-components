@@ -4,14 +4,14 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6878d72a30eb3b6a8ecb1e6e93c56ff",
+    "content-hash": "4081dc90f4040fb09c83b0f64994924b",
     "packages": [
         {
             "name": "bower-asset/inputmask",
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "https://github.com/RobinHerbots/Inputmask.git",
+                "url": "git@github.com:RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -164,12 +164,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "HTMLPurifier": "library/"
-                },
                 "files": [
                     "library/HTMLPurifier.composer.php"
                 ],
+                "psr-0": {
+                    "HTMLPurifier": "library/"
+                },
                 "exclude-from-classmap": [
                     "/library/HTMLPurifier/Language/"
                 ]
@@ -346,16 +346,16 @@
         },
         {
             "name": "smoren/yii2-active-record-explicit",
-            "version": "dev-master",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Smoren/yii2-active-record-explicit.git",
-                "reference": "ae7997693afc1e28f5bb4a03ff7ad2190a50088c"
+                "reference": "b7644c40c41674a5f8cd8c360b7400cab9ab2ab2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Smoren/yii2-active-record-explicit/zipball/ae7997693afc1e28f5bb4a03ff7ad2190a50088c",
-                "reference": "ae7997693afc1e28f5bb4a03ff7ad2190a50088c",
+                "url": "https://api.github.com/repos/Smoren/yii2-active-record-explicit/zipball/b7644c40c41674a5f8cd8c360b7400cab9ab2ab2",
+                "reference": "b7644c40c41674a5f8cd8c360b7400cab9ab2ab2",
                 "shasum": ""
             },
             "require": {
@@ -364,7 +364,6 @@
                 "smoren/extended-exceptions": "1.0.0",
                 "yiisoft/yii2": "~2.0.0"
             },
-            "default-branch": true,
             "type": "yii2-extension",
             "autoload": {
                 "psr-4": {
@@ -392,22 +391,22 @@
             ],
             "support": {
                 "issues": "https://github.com/Smoren/yii2-active-record-explicit/issues",
-                "source": "https://github.com/Smoren/yii2-active-record-explicit/tree/master"
+                "source": "https://github.com/Smoren/yii2-active-record-explicit/tree/v1.0.4"
             },
-            "time": "2021-12-08T10:50:23+00:00"
+            "time": "2022-03-26T09:58:55+00:00"
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.44",
+            "version": "2.0.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "fa89647a2d2c5de1c12c65eb94084404f52a6059"
+                "reference": "e2223d4085e5612aa616635f8fcaf478607f62e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/fa89647a2d2c5de1c12c65eb94084404f52a6059",
-                "reference": "fa89647a2d2c5de1c12c65eb94084404f52a6059",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/e2223d4085e5612aa616635f8fcaf478607f62e8",
+                "reference": "e2223d4085e5612aa616635f8fcaf478607f62e8",
                 "shasum": ""
             },
             "require": {
@@ -463,7 +462,7 @@
                 {
                     "name": "Carsten Brandt",
                     "email": "mail@cebe.cc",
-                    "homepage": "https://cebe.cc/",
+                    "homepage": "https://www.cebe.cc/",
                     "role": "Core framework development"
                 },
                 {
@@ -496,11 +495,11 @@
                 "yii2"
             ],
             "support": {
-                "forum": "https://www.yiiframework.com/forum/",
+                "forum": "https://forum.yiiframework.com/",
                 "irc": "ircs://irc.libera.chat:6697/yii",
                 "issues": "https://github.com/yiisoft/yii2/issues?state=open",
                 "source": "https://github.com/yiisoft/yii2",
-                "wiki": "https://www.yiiframework.com/wiki/"
+                "wiki": "https://www.yiiframework.com/wiki"
             },
             "funding": [
                 {
@@ -516,7 +515,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-30T07:50:56+00:00"
+            "time": "2022-02-11T13:12:40+00:00"
         },
         {
             "name": "yiisoft/yii2-composer",
@@ -598,9 +597,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "smoren/yii2-active-record-explicit": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
