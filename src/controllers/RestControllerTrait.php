@@ -422,11 +422,11 @@ trait RestControllerTrait
     }
 
     /**
-     * @param $query ActiveQuery
+     * @param ActiveQuery $query
      * @param bool $validate
      * @return ActiveQuery
      */
-    protected function filter($query, bool $validate = false): ActiveQuery
+    protected function filter(ActiveQuery $query, bool $validate = false): ActiveQuery
     {
         $filterForm = $this->getFilterForm();
 
@@ -441,16 +441,33 @@ trait RestControllerTrait
     }
 
     /**
+     * @param ActiveQuery $query
+     * @param bool $validate
      * @return ActiveQuery
      */
-    protected function getCollectionQuery(): ActiveQuery
+    protected function order(ActiveQuery $query, bool $validate = false): ActiveQuery
     {
-        return $this->beforeGettingCollection(
-            $this->userOrder(
-                $this->filter($this->getActiveRecordClassName()::find(), true),
-                $this->getOrderForm()
-            )
-        );
+        $orderForm = $this->getOrderForm();
+
+        if($orderForm && $validate) {
+            FormValidator::validate($orderForm, ApiException::class);
+        }
+
+        return $this->userOrder($query, $orderForm);
+    }
+
+    /**
+     * @param bool $validate
+     * @return ActiveQuery
+     */
+    protected function getCollectionQuery(bool $validate = true): ActiveQuery
+    {
+        $query = $this->getActiveRecordClassName()::find();
+
+        $query = $this->filter($query, $validate);
+        $query = $this->order($query, $validate);
+
+        return $this->beforeGettingCollection($query);
     }
 
     /**
