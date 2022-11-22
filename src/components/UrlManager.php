@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Smoren\Yii2\Auth\components;
-
 
 use Yii;
 use yii\base\InvalidConfigException;

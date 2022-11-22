@@ -5,6 +5,7 @@ namespace Smoren\Yii2\Auth\behaviors;
 use Smoren\Yii2\Auth\components\SessionManager;
 use yii\base\Behavior;
 use yii\base\Event;
+use yii\base\Exception;
 use yii\db\ActiveRecord;
 
 /**
@@ -24,6 +25,7 @@ class SessionDeleteBehavior extends Behavior
      * Действия события при удаление AR модели.
      * Удаляет файл, истёкшей сессии
      * @param Event $event
+     * @throws Exception
      */
     public function afterDelete(Event $event)
     {

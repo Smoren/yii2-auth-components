@@ -1,10 +1,7 @@
 <?php
 
-
 namespace Smoren\Yii2\Auth\controllers;
 
-
-use Smoren\ExtendedExceptions\BaseException;
 use Smoren\Yii2\ActiveRecordExplicit\components\ActiveDataProvider;
 use Smoren\Yii2\ActiveRecordExplicit\exceptions\DbException;
 use Smoren\Yii2\ActiveRecordExplicit\helpers\FormValidator;
@@ -13,13 +10,15 @@ use Smoren\Yii2\ActiveRecordExplicit\models\ActiveRecord;
 use Smoren\Yii2\ActiveRecordExplicit\models\Model;
 use Smoren\Yii2\Auth\exceptions\ApiException;
 use Smoren\Yii2\Auth\structs\StatusCode;
-use Throwable;
-use Yii;
+use Smoren\ExtendedExceptions\BaseException;
 use yii\data\BaseDataProvider;
+use Yii;
+use Throwable;
 
 trait RestControllerTrait
 {
     /**
+     * Map for matching actions and methods for collection APIs
      * @var string[]
      */
     protected static $collectionActionMethodMap = [
@@ -28,6 +27,7 @@ trait RestControllerTrait
         'options' => 'OPTIONS',
     ];
     /**
+     * Map for matching actions and methods for item APIs
      * @var string[]
      */
     protected static $itemActionMethodMap = [
@@ -38,10 +38,12 @@ trait RestControllerTrait
     ];
 
     /**
+     * Generate routing rules
      * @param string $apiPath
      * @param string $controllerPath
      * @param string $itemIdValidationRegexp
      * @return array
+     * @override if you want to add extra rules
      */
     public static function getRules(
         string $apiPath, string $controllerPath, string $itemIdValidationRegexp
@@ -49,43 +51,43 @@ trait RestControllerTrait
     {
         return [
             /**
-             * API получения коллекции
+             * API for getting collection
              * @see RestControllerTrait::actionCollection()
              */
             "GET {$apiPath}" => "{$controllerPath}/collection",
 
             /**
-             * API получения элемента
+             * API for getting item
              * @see RestControllerTrait::actionItem()
              */
             "GET {$apiPath}/<id:{$itemIdValidationRegexp}>" => "{$controllerPath}/item",
 
             /**
-             * API создания элемента
+             * API for creating new item
              * @see RestControllerTrait::actionCreate()
              */
             "POST {$apiPath}" => "{$controllerPath}/create",
 
             /**
-             * API редактирования элемента
+             * API for updating item
              * @see RestControllerTrait::actionUpdate()
              */
             "PUT {$apiPath}/<id:{$itemIdValidationRegexp}>" => "{$controllerPath}/update",
 
             /**
-             * API удаления элемента
+             * API for deleting item
              * @see RestControllerTrait::actionDelete()
              */
             "DELETE {$apiPath}/<id:{$itemIdValidationRegexp}>" => "{$controllerPath}/delete",
 
             /**
-             * API options коллекции
+             * API for getting collection options
              * @see RestControllerTrait::actionOptions()
              */
             "OPTIONS {$apiPath}" => "{$controllerPath}/options",
 
             /**
-             * API options элемента
+             * API for getting item options
              * @see RestControllerTrait::actionOptions()
              */
             "OPTIONS {$apiPath}/<id:{$itemIdValidationRegexp}>" => "{$controllerPath}/options",
@@ -93,6 +95,7 @@ trait RestControllerTrait
     }
 
     /**
+     * Action for getting collection
      * @return BaseDataProvider
      * @throws ApiException
      */
@@ -104,8 +107,9 @@ trait RestControllerTrait
     }
 
     /**
+     * Action for getting item
      * @param string $id
-     * @return ActiveRecord|mixed
+     * @return ActiveRecord|array
      * @throws ApiException
      */
     public function actionItem(string $id)
@@ -127,6 +131,7 @@ trait RestControllerTrait
     }
 
     /**
+     * Action for creating new item
      * @return ActiveRecord|mixed
      * @throws ApiException
      */
@@ -159,6 +164,7 @@ trait RestControllerTrait
     }
 
     /**
+     * Action for updating item
      * @param string $id
      * @return ActiveRecord|mixed
      * @throws ApiException
@@ -192,6 +198,7 @@ trait RestControllerTrait
     }
 
     /**
+     * Action for deleting item
      * @param string $id
      * @return ActiveRecord|mixed
      * @throws ApiException
@@ -222,6 +229,7 @@ trait RestControllerTrait
     }
 
     /**
+     * Action for options
      * @param string|null $id
      * @throws ApiException
      */
@@ -250,25 +258,37 @@ trait RestControllerTrait
     }
 
     /**
+     * Returns form for creating new item with loaded user data
+     * @see RestControllerTrait::actionCreate()
      * @return Model
+     * @override always
      */
     abstract protected function getCreateForm(): Model;
 
     /**
+     * Returns form for updating item with loaded user data
+     * @see RestControllerTrait::actionUpdate()
      * @param string $itemId
      * @param ActiveRecord $item
      * @return Model
+     * @override always
      */
     abstract protected function getUpdateForm(string $itemId, $item): Model;
 
     /**
+     * Returns linked active record class name
      * @return ActiveRecord::class
+     * @override always
      */
     abstract protected function getActiveRecordClassName(): string;
 
     /**
-     * @override
+     * Returns list of disabled actions
+     * Example: ['collection', 'item', 'create', 'update', 'delete', 'options']
+     * @see RestControllerTrait::checkAccess()
+     * @see RestControllerTrait::actionOptions()
      * @return string[]
+     * @override if you want to disable some actions
      */
     protected function getDisabledActions(): array
     {
@@ -276,8 +296,10 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Returns form of filter config with loaded user data
+     * @see RestControllerTrait::userFilter() to apply this form (need implementation)
      * @return Model|null
+     * @override if you want to implement user filter with user data from request
      */
     protected function getFilterForm(): ?Model
     {
@@ -285,8 +307,10 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Returns form of order config with loaded user data
+     * @see RestControllerTrait::userOrder() to apply this form (need implementation)
      * @return Model|null
+     * @override if you want to implement user order with user data from request
      */
     protected function getOrderForm(): ?Model
     {
@@ -294,10 +318,12 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Applies FilterForm to collection query
+     * @see RestControllerTrait::actionCollection()
      * @param ActiveQuery $query
      * @param Model|null $form
      * @return ActiveQuery
+     * @override if you want to apply user filter
      */
     protected function userFilter(ActiveQuery $query, ?Model $form): ActiveQuery
     {
@@ -305,10 +331,12 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Applies OrderForm to collection query
+     * @see RestControllerTrait::actionCollection()
      * @param ActiveQuery $query
      * @param Model|null $form
      * @return ActiveQuery
+     * @override if you want to apply user order
      */
     protected function userOrder(ActiveQuery $query, ?Model $form): ActiveQuery
     {
@@ -316,9 +344,14 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Adds extra filter conditions for collection, item, update, delete actions
+     * @see RestControllerTrait::actionCollection()
+     * @see RestControllerTrait::actionItem()
+     * @see RestControllerTrait::actionUpdate()
+     * @see RestControllerTrait::actionDelete()
      * @param $query ActiveQuery
      * @return ActiveQuery
+     * @override if you want to apply access filter
      */
     protected function accessFilter(ActiveQuery $query): ActiveQuery
     {
@@ -326,9 +359,11 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Returns data provider for getting collection
+     * @see RestControllerTrait::actionCollection()
      * @param ActiveQuery $query
      * @return BaseDataProvider
+     * @override if you want to replace base ActiveDataProvider (e.g. for pagination)
      */
     protected function getDataProvider(ActiveQuery $query): BaseDataProvider
     {
@@ -338,9 +373,11 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Extra instruction to execute before getting collection
+     * @see RestControllerTrait::actionCollection()
      * @param ActiveQuery $query
      * @return ActiveQuery
+     * @override if you want to execute some instructions before getting collection
      */
     protected function beforeGettingCollection(ActiveQuery $query): ActiveQuery
     {
@@ -348,9 +385,11 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Extra instruction to execute before getting item
+     * @see RestControllerTrait::actionItem()
      * @param ActiveQuery $query
      * @return ActiveQuery
+     * @override if you want to execute some instructions before getting item
      */
     protected function beforeGettingItem(ActiveQuery $query): ActiveQuery
     {
@@ -358,10 +397,12 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Extra instruction to execute before creating new item
+     * @see RestControllerTrait::actionCreate()
      * @param ActiveRecord $item
      * @param Model $form
      * @return ActiveRecord
+     * @override if you want to execute some instructions before creating new item
      */
     protected function beforeCreate(ActiveRecord $item, Model $form): ActiveRecord
     {
@@ -369,10 +410,12 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Extra instruction to execute after creating new item
+     * @see RestControllerTrait::actionCreate()
      * @param ActiveRecord $item
      * @param Model $form
      * @return ActiveRecord|mixed
+     * @override if you want to execute some instructions after creating new item
      */
     protected function afterCreate(ActiveRecord $item, Model $form)
     {
@@ -380,10 +423,12 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Extra instruction to execute before updating item
+     * @see RestControllerTrait::actionUpdate()
      * @param ActiveRecord $item
      * @param Model $form
      * @return ActiveRecord
+     * @override if you want to execute some instructions before updating item
      */
     protected function beforeUpdate(ActiveRecord $item, Model $form): ActiveRecord
     {
@@ -391,10 +436,12 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Extra instruction to execute after updating item
+     * @see RestControllerTrait::actionUpdate()
      * @param ActiveRecord $item
      * @param Model $form
      * @return ActiveRecord|mixed
+     * @override if you want to execute some instructions after updating item
      */
     protected function afterUpdate(ActiveRecord $item, Model $form)
     {
@@ -402,9 +449,11 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Extra instruction to execute before deleting item
+     * @see RestControllerTrait::actionDelete()
      * @param ActiveRecord $item
      * @return ActiveRecord
+     * @override if you want to execute some instructions before deleting item
      */
     protected function beforeDelete(ActiveRecord $item): ActiveRecord
     {
@@ -412,9 +461,11 @@ trait RestControllerTrait
     }
 
     /**
-     * @override
+     * Extra instruction to execute after deleting item
+     * @see RestControllerTrait::actionDelete()
      * @param mixed $item
      * @return ActiveRecord|mixed
+     * @override if you want to execute some instructions after deleting item
      */
     protected function afterDelete(ActiveRecord $item)
     {
@@ -422,6 +473,9 @@ trait RestControllerTrait
     }
 
     /**
+     * Applies filter conditions for collection query using user filter and access filter
+     * @see RestControllerTrait::accessFilter()
+     * @see RestControllerTrait::userFilter()
      * @param ActiveQuery $query
      * @param bool $validate
      * @return ActiveQuery
@@ -441,6 +495,8 @@ trait RestControllerTrait
     }
 
     /**
+     * Applies order conditions using user order
+     * @see RestControllerTrait::userOrder()
      * @param ActiveQuery $query
      * @param bool $validate
      * @return ActiveQuery
@@ -457,6 +513,10 @@ trait RestControllerTrait
     }
 
     /**
+     * Returns getting collection query using access filter, user filter and user order
+     * @see RestControllerTrait::accessFilter()
+     * @see RestControllerTrait::userFilter()
+     * @see RestControllerTrait::userOrder()
      * @param bool $validate
      * @return ActiveQuery
      */
@@ -471,6 +531,8 @@ trait RestControllerTrait
     }
 
     /**
+     * Returns getting item query using access filter
+     * @see RestControllerTrait::accessFilter()
      * @param $id string
      * @return ActiveQuery
      */
@@ -480,6 +542,8 @@ trait RestControllerTrait
     }
 
     /**
+     * Returns item with using access filter
+     * @see RestControllerTrait::accessFilter()
      * @param string $id
      * @return ActiveRecord
      * @throws ApiException
@@ -498,6 +562,8 @@ trait RestControllerTrait
     }
 
     /**
+     * Checks access to action using method getDisabledActions()
+     * @see RestControllerTrait::getDisabledActions()
      * @param string $methodName
      * @return $this
      * @throws ApiException

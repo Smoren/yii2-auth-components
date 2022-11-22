@@ -2,7 +2,6 @@
 
 namespace Smoren\Yii2\Auth\helpers;
 
-
 use Smoren\Yii2\Auth\exceptions\ApiException;
 use Smoren\Yii2\Auth\structs\StatusCode;
 use Yii;

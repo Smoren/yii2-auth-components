@@ -2,7 +2,6 @@
 
 namespace Smoren\Yii2\Auth\exceptions;
 
-
 /**
  * Исключение проверки токена
  */

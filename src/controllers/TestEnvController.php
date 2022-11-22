@@ -2,7 +2,6 @@
 
 namespace Smoren\Yii2\Auth\controllers;
 
-
 use Smoren\Yii2\Auth\behaviors\TestEnvFilter;
 
 /**

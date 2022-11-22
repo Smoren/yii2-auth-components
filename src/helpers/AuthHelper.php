@@ -1,15 +1,13 @@
 <?php
 
-
 namespace Smoren\Yii2\Auth\helpers;
-
 
 use Smoren\UrlSecurityManager\Exceptions\DecryptException;
 use Smoren\UrlSecurityManager\Exceptions\UrlSecurityManagerException;
 use Smoren\UrlSecurityManager\UrlSecurityManager;
 use Smoren\Yii2\Auth\exceptions\TokenException;
-use Yii;
 use yii\filters\AccessControl;
+use Yii;
 
 class AuthHelper
 {

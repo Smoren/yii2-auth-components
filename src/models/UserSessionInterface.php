@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Smoren\Yii2\Auth\models;
-
 
 use Smoren\ExtendedExceptions\BadDataException;
 use yii\db\ActiveQuery;
