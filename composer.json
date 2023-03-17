@@ -15,7 +15,7 @@
     "yiisoft/yii2": "~2.0.0",
     "smoren/url-security-manager": "^1.0.4",
     "smoren/extended-exceptions": "^1.0.0",
-    "smoren/yii2-active-record-explicit": "^1.0.4",
+    "smoren/yii2-active-record-explicit": "^1.0.4|^2.0.0",
     "ext-json": "*"
   },
   "autoload": {
