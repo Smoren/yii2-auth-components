@@ -4,9 +4,10 @@ namespace Smoren\Yii2\Auth\interfaces;
 
 use Smoren\Yii2\ActiveRecordExplicit\models\ActiveRecord;
 use Smoren\Yii2\Auth\exceptions\ApiException;
+use yii\base\ViewContextInterface;
 use yii\data\BaseDataProvider;
 
-interface RestControllerInterface
+interface RestControllerInterface extends ViewContextInterface
 {
     /**
      * Generate routing rules
